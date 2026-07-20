@@ -86,7 +86,7 @@ public class App {
 // Modelo
 ///////////////////////////////////////////////////////////////////////
 
-public class Libro {
+class Libro {
     private int id;
     private String titulo;
     private String autor;
@@ -121,7 +121,7 @@ public class Libro {
 
 
 
-public class ModeloLibros {
+class ModeloLibros {
     private List<Libro> libros;
     private int nextId;
 
@@ -197,7 +197,7 @@ public class ModeloLibros {
 // Vista
 ///////////////////////////////////////////////////////////////////////
 
-public class VistaConsola {
+class VistaConsola {
     private Scanner scanner;
 
     public VistaConsola() {
@@ -270,7 +270,7 @@ public class VistaConsola {
 // Controlador
 ///////////////////////////////////////////////////////////////////////
 
-public class ControladorLibros {
+class ControladorLibros {
     private ModeloLibros modelo;
     private VistaConsola vista;
 
@@ -391,7 +391,7 @@ public class ControladorLibros {
 // Interfaz Command
 ///////////////////////////////////////////////////////////////////////
 
-public interface Command {
+interface Command {
     void execute();
     void undo();  // Añadimos undo a la interfaz
 }
@@ -400,7 +400,7 @@ public interface Command {
 // Receptor
 ///////////////////////////////////////////////////////////////////////
 
-public class Light {
+class Light {
     private boolean on = false;
     private int brightness = 50;
 
@@ -451,7 +451,7 @@ public class Light {
     }
 
     // Clase Memento interna (inmutable)
-    public static class LightMemento {
+    static class LightMemento {
         private final boolean on;
         private final int brightness;
 
@@ -469,7 +469,7 @@ public class Light {
 // Comandos concretos
 ///////////////////////////////////////////////////////////////////////
 
-public class TurnOnCommand implements Command {
+class TurnOnCommand implements Command {
     private final Light light;
     private Light.LightMemento previousState;
 
@@ -493,7 +493,7 @@ public class TurnOnCommand implements Command {
     }
 }
 
-public class TurnOffCommand implements Command {
+class TurnOffCommand implements Command {
     private final Light light;
     private Light.LightMemento previousState;
 
@@ -515,7 +515,7 @@ public class TurnOffCommand implements Command {
     }
 }
 
-public class DimCommand implements Command {
+class DimCommand implements Command {
     private final Light light;
     private final int level;
     private Light.LightMemento previousState;
@@ -544,7 +544,7 @@ public class DimCommand implements Command {
 // Comando Macro
 ///////////////////////////////////////////////////////////////////////
 
-public class MacroCommand implements Command {
+class MacroCommand implements Command {
     private final List<Command> commands = new ArrayList<>();
     private final List<Command> executedCommands = new ArrayList<>();
 
@@ -575,7 +575,7 @@ public class MacroCommand implements Command {
 // Invocador con Historial/Deshacer
 ///////////////////////////////////////////////////////////////////////
 
-public class RemoteControl {
+class RemoteControl {
     private final Stack<Command> history = new Stack<>();
     private final Stack<Command> redoStack = new Stack<>();
     private Command currentCommand;

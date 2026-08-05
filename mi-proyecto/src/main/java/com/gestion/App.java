@@ -1,17 +1,10 @@
-package com.ejemplo;
+package com.gestion;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.Optional;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
-import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -58,6 +51,12 @@ public class App {
             
         remote.setCommand(dim80);
         remote.pressButton();  // 80%
+        
+        remote.setCommand(turnOff);
+        remote.pressButton();  // OFF
+
+        System.out.println("\n--- Deshaciendo turnOff ---");
+        remote.undo();  // Vuelve a 80%
 
         System.out.println("\n--- Deshaciendo dim 80 ---");
         remote.undo();  // Vuelve a 30%
@@ -698,51 +697,4 @@ class RemoteControl {
           " comandos"
         );
     }
-}
-
-///////////////////////////////////////////////////////////////////////
-//****** Program Con TUI ******
-///////////////////////////////////////////////////////////////////////
-
-// Modelo /////////////////////////////////////////////////////////////
-class Modelo {
-
-  
-}
-
-// Vista  /////////////////////////////////////////////////////////////
-class VistaLogin {
-  private String nombre;
-  private String correo;
-  private String documento;
-  private String telefono;
-  private String contrasenia;
-  private ArrayList<String> datos = new ArrayList();
-  
-  
-  public Arr imprimir() {
-    
-  }
-}
-
-class VistaClientes {
-  
-}
-
-class VistaProductos {
-  
-}
-
-class VistaVentas {
-  
-}
-
-class VistaPresentaciones {
-  
-}
-
-
-// Controlador ////////////////////////////////////////////////////////
-class Controlador {
-  
 }

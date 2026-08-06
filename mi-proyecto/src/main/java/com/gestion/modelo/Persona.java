@@ -2,9 +2,23 @@ package com.gestion.modelo;
 
 public class Persona {
 	private String nombre;
-	private String numeroIdentificacion;
+	private String numeroIdentidad;
 
 	// Getters
-	 
-	// Setters
+    public String conseguirNombre() { 
+      return nombre; 
+    }
+    public String conseguirNumeroIdentidad() {
+      return numeroIdentidad; 
+    }
+
+    // Setters
+    public void colocarNombre(String nombre) { 
+      this.nombre = nombre; 
+    }
+    public void colocarNumeroIdentidad(String numeroIdentidad) { 
+        this.numeroIdentidad = numeroIdentidad; 
+    }
+
+	// Metodos
 }

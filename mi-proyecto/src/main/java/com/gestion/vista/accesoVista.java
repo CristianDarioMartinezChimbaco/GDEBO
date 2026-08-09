@@ -1,18 +1,17 @@
 package com.gestion.vista;
 
-import java.util.Scanner;
 import com.gestion.modelo.Usuario;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 
-public class accesoVista {
+public class AccesoVista {
     // private Scanner sc = new Scanner(System.in);
     private static WindowBasedTextGUI interfazGraficaUsuario;
 
 	private Usuario usuario = new Usuario();
 
     // Constructor
-    public accesoVista(Usuario usuario) {
+    public AccesoVista(Usuario usuario) {
         this.usuario = usuario;
     }
 
@@ -39,29 +38,33 @@ public class accesoVista {
         TextBox cajaContrasena = new TextBox().setMask('*');
         panel.addComponent(cajaContrasena);
         
-        Button accesoBoton = new Button(
-            "Iniciar Sesion", () -> {
-                usuario.colocarNombreUsuario(cajaUsuario.getText());
-                usuario.colocarContrasena(cajaContrasena.getText());
-                
-                if ("admin".equals(usuario.conseguirNombreUsuario()) && "1234".equals(usuario.conseguirContrasena())) {
-                    
-                    MessageDialog.showMessageDialog(interfazGraficaUsuario, "Correcto", "Credenciales correctas");
-                
-                    // currentUser = usuario.conseguirNombreUsuario();
-                    // loggedIn = true;
-                    ventana.close();
-                    // mostrarMenuPrincipal();
-                } else {
-                    MessageDialog.showMessageDialog(interfazGraficaUsuario, "Error", "Credenciales incorrectas");
-                }
-            }
-        );
+        Button accesoBoton = new Button("Iniciar Sesion", AccionBoton(
+            cajaUsuario.getText(), cajaContrasena.getText(), ventana
+        ));
         
         panel.addComponent(accesoBoton, GridLayout.createHorizontallyFilledLayoutData(2));
         ventana.setComponent(panel);
         interfazGraficaUsuario.addWindowAndWait(ventana);
     }
+
+    public Runnable AccionBoton(String nombre, String contrasena, Window ventana) {        
+        usuario.colocarNombreUsuario(nombre);
+        usuario.colocarContrasena(contrasena);
+        
+        if ("admin".equals(usuario.conseguirNombreUsuario()) && "1234".equals(usuario.conseguirContrasena())) {
+            
+            MessageDialog.showMessageDialog(interfazGraficaUsuario, "Correcto", "Credenciales correctas");
+        
+            // currentUser = usuario.conseguirNombreUsuario();
+            // loggedIn = true;
+            ventana.close();
+            // mostrarMenuPrincipal();
+        } else {
+            MessageDialog.showMessageDialog(interfazGraficaUsuario, "Error", "Credenciales incorrectas");
+        }
+    }
+
+
 
 
     

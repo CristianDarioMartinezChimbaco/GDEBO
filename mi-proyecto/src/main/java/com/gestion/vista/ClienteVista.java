@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 
 public class ClienteVista {
-	private Scanner sc = new Scanner(System.in);
+	//private Scanner sc = new Scanner(System.in);
 	private Usuario usuario = new Usuario();
 
 

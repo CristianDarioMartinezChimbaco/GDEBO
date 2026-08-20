@@ -1,6 +1,6 @@
 package com.gestion.vista;
 
-import java.io.IOException;
+//import java.io.IOException;
 
 import com.gestion.modelo.Usuario;
 import com.googlecode.lanterna.TerminalSize;

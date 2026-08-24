@@ -1,6 +1,7 @@
 package com.gestion.modelo;
 
 public class Cliente {
+    private int id;
     private Persona persona = new Persona();
     private String correoElectronico;
     private int telefono;

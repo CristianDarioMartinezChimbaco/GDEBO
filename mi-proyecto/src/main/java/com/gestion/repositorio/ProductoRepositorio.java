@@ -9,24 +9,38 @@ import com.gestion.modelo.Producto;
 
 
 public class ProductoRepositorio {
+
     private String crearTabla = "CREATE TABLE IF NOT EXISTS producto ("
-        + "id INTEGER PRIMARY KEY,"
-        + "codigo_barras INTEGER UNIQUE NOT NULL,"
-        + "nombre_producto TEXT NOT NULL,"
-        + "marca TEXT NOT NULL,"
-        + "cantidad_producto REAL NOT NULL,"
-        + "unidad_medida TEXT,"
-        + "unidad_agrupada INTEGER,"
-        + "precio_venta REAL NOT NULL,"
+        + "id INTEGER PRIMARY KEY, "
+        + "codigo_barras INTEGER UNIQUE NOT NULL, "
+        + "nombre_producto TEXT NOT NULL, "
+        + "marca TEXT NOT NULL, "
+        + "cantidad_producto REAL NOT NULL, "
+        + "unidad_medida TEXT, "
+        + "unidad_agrupada INTEGER, "
+        + "precio_venta REAL NOT NULL, "
         + "existencias INTEGER, "
         + "minimo_existencias INTEGER, "
         + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id)"
         + ");"
     ;
+    private String actualizar = "UPDATE producto" 
+        + "SET codigo_barras = ?, "
+        + "nombre_producto = ?, "
+        + "marca = ?,"
+        + "cantidad_producto = ?, "
+        + "unidad_medida = ?, "
+        + "unidad_agrupada = ?, "
+        + "precio_venta = ?, "
+        + "existencias = ?, " 
+        + "minimo_existencias = ? " 
+        + "WHERE id = ?"
+    ; 
     private String insertar = "INSERT INTO producto VALUES "
         + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)"
     ;
     private String consultar = "SELECT * FROM producto;";
+    
     // Getters
 
     // Setters
@@ -46,15 +60,20 @@ public class ProductoRepositorio {
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(insertar)
         ) {
             sentenciaPreparada.setString(1, producto);
-            sentenciaPreparada.setString(2, nombre);
-            sentenciaPreparada.setString(3, marca);
-            sentenciaPreparada.setDouble(4, precio);
+            sentenciaPreparada.setString(2, producto);
+            sentenciaPreparada.setString(3, producto);
+            sentenciaPreparada.setDouble(4, producto);
+            sentenciaPreparada.setDouble(5, producto);
+            sentenciaPreparada.setDouble(6, producto);
+            sentenciaPreparada.setDouble(7, producto);
+            sentenciaPreparada.setDouble(8, producto);
+            sentenciaPreparada.setDouble(9, producto);
+            sentenciaPreparada.setDouble(10, producto);
             sentenciaPreparada.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     public void ejecutar() {
         try (Connection conexion = Conexion.conectar()) {

@@ -8,6 +8,10 @@ public class Cliente {
     private Double saldo;
 
     // Getters
+    public int conseguirId() {
+      return id; 
+    }
+
     public Persona conseguirPersona() { 
       return persona; 
     }
@@ -25,7 +29,11 @@ public class Cliente {
     }
 
     // Setters
-    public void colocarNombre(Persona persona) { 
+    public void colocarId(int id) { 
+      this.id = id; 
+    }
+
+    public void colocarPersona(Persona persona) { 
       this.persona = persona; 
     }
 

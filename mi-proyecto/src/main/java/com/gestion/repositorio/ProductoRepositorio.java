@@ -10,9 +10,10 @@ import com.gestion.modelo.Producto;
 
 public class ProductoRepositorio {
 
-    private String crearTabla = "CREATE TABLE IF NOT EXISTS producto ("
+    // Create
+    private String crearTabla = "CREATE TABLE IF NOT EXISTS producto ( "
         + "id INTEGER PRIMARY KEY, "
-        + "codigo_barras INTEGER UNIQUE NOT NULL, "
+        + "codigo_barras TEXT UNIQUE, "
         + "nombre_producto TEXT NOT NULL, "
         + "marca TEXT NOT NULL, "
         + "cantidad_producto REAL NOT NULL, "
@@ -21,10 +22,16 @@ public class ProductoRepositorio {
         + "precio_venta REAL NOT NULL, "
         + "existencias INTEGER, "
         + "minimo_existencias INTEGER, "
-        + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id)"
-        + ");"
+        + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id) "
+        + "); "
     ;
-    private String actualizar = "UPDATE producto" 
+    private String insertar = "INSERT INTO producto VALUES "
+        + "(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?,); "
+    ;
+    // Read
+    private String consulta = "SELECT * FROM producto; ";
+    // Update
+    private String actualizar = "UPDATE producto " 
         + "SET codigo_barras = ?, "
         + "nombre_producto = ?, "
         + "marca = ?,"
@@ -34,17 +41,15 @@ public class ProductoRepositorio {
         + "precio_venta = ?, "
         + "existencias = ?, " 
         + "minimo_existencias = ? " 
-        + "WHERE id = ?"
+        + "WHERE id = ?; "
     ; 
-    private String insertar = "INSERT INTO producto VALUES "
-        + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)"
-    ;
-    private String consultar = "SELECT * FROM producto;";
-    
+    // Delete    
+    private String borrar = "DELETE FROM producto WHERE id = ?; ";
     // Getters
 
     // Setters
 
+    // Metodos
     public void generarTabla(){
         try (Connection conexion = Conexion.conectar()){
             conexion.createStatement().execute(crearTabla);
@@ -59,17 +64,93 @@ public class ProductoRepositorio {
             Connection conexion = Conexion.conectar();
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(insertar)
         ) {
-            sentenciaPreparada.setString(1, producto);
-            sentenciaPreparada.setString(2, producto);
-            sentenciaPreparada.setString(3, producto);
-            sentenciaPreparada.setDouble(4, producto);
-            sentenciaPreparada.setDouble(5, producto);
-            sentenciaPreparada.setDouble(6, producto);
-            sentenciaPreparada.setDouble(7, producto);
-            sentenciaPreparada.setDouble(8, producto);
-            sentenciaPreparada.setDouble(9, producto);
-            sentenciaPreparada.setDouble(10, producto);
+            sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
+            sentenciaPreparada.setString(2, producto.conseguirNombre());
+            sentenciaPreparada.setString(3, producto.conseguirMarca());
+            sentenciaPreparada.setDouble(4, producto.conseguirCantidadProducto());
+            sentenciaPreparada.setString(5, producto.conseguirUnidadMedida());
+            sentenciaPreparada.setInt(6, producto.conseguirUnidadAgrupada());
+            sentenciaPreparada.setDouble(7, producto.conseguirPrecio());
+            sentenciaPreparada.setInt(8, producto.conseguirExistencias());
+            sentenciaPreparada.setInt(9, producto.conseguirMinimoExistencias());
             sentenciaPreparada.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void consultaEstrella(){
+        try (
+            Connection conexion = Conexion.conectar();
+            ResultSet rs = conexion.createStatement().executeQuery(consulta)
+        ) {
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt("id") + " - " +
+                    rs.getString("nombre") + " - $" +
+                    rs.getDouble("precio")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String crearFiltro(Producto producto) {
+        String resultado = "SELECT * FROM producto WHERE 1=1 ";
+        if (producto.conseguirId() >= 0) {
+            resultado += "AND id = ? ";
+        }
+        if (producto.conseguirCodigoBarras() != null
+                && !producto.conseguirCodigoBarras().isBlank()) {
+            resultado += "AND codigo_barras = ? ";
+        }
+        if (producto.conseguirNombre() != null
+                && !producto.conseguirNombre().isBlank()) {
+            resultado += "AND nombre_producto = ? ";
+        }
+        if (producto.conseguirMarca() != null
+                && !producto.conseguirMarca().isBlank()) {
+            resultado += "AND marca = ? ";
+        }
+        if (producto.conseguirCantidadProducto() >= 0) {
+            resultado += "AND cantidad_producto = ? ";
+        }
+        if (producto.conseguirUnidadMedida() != null
+                && !producto.conseguirUnidadMedida().isBlank()) {
+            resultado += "AND unidad_medida = ? ";
+        }
+        if (producto.conseguirUnidadAgrupada() >= 0) {
+            resultado += "AND unidad_agrupada = ? ";
+        }
+        if (producto.conseguirPrecio() >= 0) {
+            resultado += "AND precio_venta = ? ";
+        }
+        if (producto.conseguirExistencias() >= 0) {
+            resultado += "AND existencias = ? ";
+        }
+        if (producto.conseguirMinimoExistencias() >= 0) {
+            resultado += "AND minimo_existencias = ? ";
+        }
+        return resultado + "; ";
+    }
+
+    public void consultaFiltro(Producto producto){
+        String consultar = selecionar 
+            + estrella 
+            + tabla
+            + cerrarConsulta;
+        try (
+            Connection conexion = Conexion.conectar();
+            ResultSet rs = conexion.createStatement().executeQuery(consultar)
+        ) {
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt("id") + " - " +
+                    rs.getString("nombre") + " - $" +
+                    rs.getDouble("precio")
+                );
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,38 +189,3 @@ public class ProductoRepositorio {
         }
     }
 }
-
-
-/* 
-public class ProductoRepositorio {
-    private Connection conexion;
-
-    public ProductoRepositorio(Connection conexion) {
-        this.conexion = conexion;
-    }
-
-    public void agregarProducto(String codigoBarras, String nombre, String marca, double precio) {
-        String sql = "INSERT INTO productos (codigo_barras, nombre, marca, precio) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
-            statement.setString(1, codigoBarras);
-            statement.setString(2, nombre);
-            statement.setString(3, marca);
-            statement.setDouble(4, precio);
-            statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ResultSet obtenerProductos() {
-        String sql = "SELECT * FROM productos";
-        try {
-            PreparedStatement statement = conexion.prepareStatement(sql);
-            return statement.executeQuery();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-}
-*/

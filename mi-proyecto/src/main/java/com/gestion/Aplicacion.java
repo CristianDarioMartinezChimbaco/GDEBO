@@ -1,9 +1,9 @@
 package com.gestion;
 
-import com.gestion.controlador.comando.*;
-import com.gestion.controlador.invocador.*;
-import com.gestion.modelo.*;
-import com.gestion.vista.*;
+import com.gestion.controller.command.*;
+import com.gestion.controller.invoker.*;
+import com.gestion.model.*;
+import com.gestion.view.*;
 
 public class Aplicacion {
     public static void main(String[] args) {

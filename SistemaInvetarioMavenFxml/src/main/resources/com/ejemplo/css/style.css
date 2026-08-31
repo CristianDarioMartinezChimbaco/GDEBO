@@ -1,0 +1,188 @@
+.root {
+    -fx-font-family: "System";
+    -fx-background-color: #f5f6f8;
+}
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    -fx-background-color: #20252b;
+}
+
+.logo {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-text-fill: #aeb4bb;
+    -fx-font-size: 12px;
+}
+
+.user-label {
+    -fx-text-fill: #aeb4bb;
+    -fx-font-size: 12px;
+}
+
+
+/* ================= MENU ================= */
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dce0e4;
+
+    -fx-font-size: 14px;
+
+    -fx-alignment: CENTER_LEFT;
+
+    -fx-padding: 12px 15px;
+
+    -fx-background-radius: 7px;
+
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #343a42;
+}
+
+
+/* ================= CONTENT ================= */
+
+.content {
+    -fx-background-color: #f5f6f8;
+}
+
+.title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.description {
+    -fx-text-fill: #7c838b;
+}
+
+
+/* ================= BUTTON ================= */
+
+.primary-button {
+    -fx-background-color: #2563eb;
+
+    -fx-text-fill: white;
+
+    -fx-font-weight: bold;
+
+    -fx-padding: 10px 18px;
+
+    -fx-background-radius: 7px;
+
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+
+/* ================= CARDS ================= */
+
+.card {
+    -fx-background-color: white;
+
+    -fx-background-radius: 10px;
+
+    -fx-padding: 18px;
+
+    -fx-min-width: 180px;
+
+    -fx-pref-width: 220px;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.08),
+        8,
+        0,
+        0,
+        2
+    );
+}
+
+.warning-card {
+    -fx-border-color: #f59e0b;
+
+    -fx-border-radius: 10px;
+
+    -fx-border-width: 1px;
+}
+
+.card-title {
+    -fx-text-fill: #6b7280;
+
+    -fx-font-size: 13px;
+}
+
+.card-value {
+    -fx-font-size: 27px;
+
+    -fx-font-weight: bold;
+
+    -fx-padding: 8px 0;
+}
+
+.card-description {
+    -fx-text-fill: #9ca3af;
+
+    -fx-font-size: 12px;
+}
+
+
+/* ================= TABLE ================= */
+
+.table-view {
+    -fx-background-color: white;
+
+    -fx-background-radius: 8px;
+
+    -fx-border-color: #e5e7eb;
+
+    -fx-border-radius: 8px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f9fafb;
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+}
+
+
+/* ================= SECTION ================= */
+
+.section-title {
+    -fx-font-size: 16px;
+
+    -fx-font-weight: bold;
+}
+
+
+/* ================= CHART ================= */
+
+.chart-card {
+    -fx-background-color: white;
+
+    -fx-background-radius: 10px;
+
+    -fx-padding: 15px;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.06),
+        8,
+        0,
+        0,
+        2
+    );
+}

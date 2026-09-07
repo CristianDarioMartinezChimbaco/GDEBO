@@ -11,16 +11,27 @@ public class Producto {
     private Double precio;
     private Double existencias;
     private Double minimoExistencias;
+    private Boolean activo;
 
     // Constructor 
+
     /*
-    public Producto(String codigoBarras, String nombre, String marca, double precio) {
+    public Producto(String codigoBarras, 
+      String nombre, 
+      String marca, 
+      Double cantidadProducto,
+      String unidadMedida,
+      Integer unidadAgrupada,
+      Double precio,
+      Double existencias,
+      Double minimoExistencias,
+      Boolean activo) {
         this.codigoBarras = codigoBarras;
         this.nombre = nombre;
         this.marca = marca;
         this.precio = precio;
     }
-    */
+      */
 
     // Getters
     public Integer conseguirId() {
@@ -63,6 +74,10 @@ public class Producto {
       return minimoExistencias; 
     }
 
+    public Boolean conseguirActivo() {
+      return activo; 
+    }
+
     // Setters
     public void colocarId(Integer id) { 
       this.id = id; 
@@ -102,6 +117,10 @@ public class Producto {
 
     public void colocarMinimoExistencias(Double minimoExistencias) { 
       this.minimoExistencias = minimoExistencias; 
+    }
+
+    public void colocarActivo(Boolean activo) { 
+      this.activo = activo; 
     }
 
     // Metodos

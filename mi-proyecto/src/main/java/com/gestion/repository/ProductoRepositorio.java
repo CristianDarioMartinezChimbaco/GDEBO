@@ -82,6 +82,7 @@ public class ProductoRepositorio {
         try (Connection conexion = ConexionBaseDatos.conectar()){
             conexion.createStatement().execute(crearTabla);
         } catch (Exception e){
+            System.out.println("Error al crear la tabla producto: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -135,14 +136,16 @@ public class ProductoRepositorio {
         return resultado + "; ";
     }
 
-    public ArrayList<Producto> consultar(String[] consulta){
-        ArrayList<Producto> productos = new ArrayList<>();
-        String consultaFinal;
-        if (consulta != null){
-            consultaFinal = crearConsultaFiltro(consulta);
-        } else {
-            consultaFinal = consultaTodo;
-        }      
+    public ArrayList<Producto> consultarTodo() {
+        return consultar(consultaTodo);
+    }
+
+    public ArrayList<Producto> consultarFiltro(String[] consulta) {
+        return consultar(crearConsultaFiltro(consulta));
+    }
+
+    public ArrayList<Producto> consultar(String consultaFinal){
+        ArrayList<Producto> productos = new ArrayList<>();    
         try (
             Connection conexion = ConexionBaseDatos.conectar();
             ResultSet conjuntoResultados = conexion.createStatement().executeQuery(consultaFinal)

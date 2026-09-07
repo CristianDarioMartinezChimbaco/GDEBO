@@ -20,8 +20,8 @@ public class ProductoRepositorio {
         + "unidad_medida TEXT, "
         + "unidad_agrupada INTEGER, "
         + "precio_venta REAL NOT NULL, "
-        + "existencias INTEGER, "
-        + "minimo_existencias INTEGER, "
+        + "existencias REAL, "
+        + "minimo_existencias REAL, "
         + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id) "
         + "); "
     ;
@@ -56,8 +56,10 @@ public class ProductoRepositorio {
         if (producto.conseguirId() != null && producto.conseguirId() >= 0) {
             resultado += "AND id = ? ";
         }
-        if (producto.conseguirCodigoBarras() != null
-                && !producto.conseguirCodigoBarras().isBlank()) {
+        if (
+            producto.conseguirCodigoBarras() != null
+            && !producto.conseguirCodigoBarras().isBlank()
+        ) {
             resultado += "AND codigo_barras = ? ";
         }
         if (producto.conseguirNombre() != null

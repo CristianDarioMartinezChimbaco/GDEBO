@@ -1,7 +1,7 @@
 package com.gestion.model;
 
 public class Producto {
-    private Integer id = -1; //int
+    private Integer id; 
     private String codigoBarras;
     private String nombre;
     private String marca;
@@ -9,8 +9,8 @@ public class Producto {
     private String unidadMedida;
     private Integer unidadAgrupada;
     private Double precio;
-    private Integer existencias;
-    private Integer minimoExistencias;
+    private Double existencias;
+    private Double minimoExistencias;
 
     // Constructor 
     /*
@@ -55,11 +55,11 @@ public class Producto {
       return precio; 
     }
 
-    public Integer conseguirExistencias() {
+    public Double conseguirExistencias() {
       return existencias; 
     }
 
-    public Integer conseguirMinimoExistencias() {
+    public Double conseguirMinimoExistencias() {
       return minimoExistencias; 
     }
 
@@ -96,11 +96,11 @@ public class Producto {
       this.precio = precio; 
     }
 
-    public void colocarExistencias(Integer existencias) { 
+    public void colocarExistencias(Double existencias) { 
       this.existencias = existencias; 
     }
 
-    public void colocarMinimoExistencias(Integer minimoExistencias) { 
+    public void colocarMinimoExistencias(Double minimoExistencias) { 
       this.minimoExistencias = minimoExistencias; 
     }
 

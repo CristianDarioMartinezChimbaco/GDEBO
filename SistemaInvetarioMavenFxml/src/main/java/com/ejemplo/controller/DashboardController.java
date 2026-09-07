@@ -1,4 +1,4 @@
-package main.java.com.ejemplo.controller;
+package com.ejemplo.controller;
 
 import com.ejemplo.model.Producto;
 

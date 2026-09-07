@@ -185,7 +185,7 @@
 
                     <Label
                             fx:id="lblVentas"
-                            text="$0"
+                            text="\$0"
                             styleClass="card-value"/>
 
                     <Label

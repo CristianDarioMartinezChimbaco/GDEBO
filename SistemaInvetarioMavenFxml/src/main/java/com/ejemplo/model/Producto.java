@@ -1,4 +1,4 @@
-package main.java.com.ejemplo.model;
+package com.ejemplo.model;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;

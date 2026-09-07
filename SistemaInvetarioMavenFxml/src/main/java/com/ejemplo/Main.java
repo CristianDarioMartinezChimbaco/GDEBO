@@ -1,4 +1,4 @@
-package main.java.com.ejemplo;
+package com.ejemplo;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

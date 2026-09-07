@@ -6,7 +6,7 @@
             https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ejemplo</groupId>
-    <artifactId>SistemaInventarioMavenJavaFX</artifactId>
+    <artifactId>SistemaInventarioMavenFxml</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Sistema de Inventario Don Edgar</name>
     <properties>

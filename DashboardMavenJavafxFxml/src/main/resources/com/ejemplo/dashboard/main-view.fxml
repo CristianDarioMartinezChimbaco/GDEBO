@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ejemplo.dashboard.controller.MainController"
+            stylesheets="@styles/style.css">
+
+    <!-- ====== NAVBAR SUPERIOR ====== -->
+    <top>
+        <HBox style="-fx-background-color: #2C3E50; -fx-padding: 10; -fx-alignment: center-left; -fx-spacing: 20;">
+            <Label text="🚀 Mi Dashboard" style="-fx-text-fill: white; -fx-font-size: 20; -fx-font-weight: bold;"/>
+            <Label fx:id="lblTitulo" text="Dashboard Principal" style="-fx-text-fill: #ECF0F1; -fx-font-size: 16;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblUsuario" style="-fx-text-fill: #ECF0F1; -fx-font-size: 14;"/>
+            <MenuButton fx:id="menuOpciones" text="⚙️ Opciones" style="-fx-text-fill: white; -fx-background-color: #34495E;"/>
+        </HBox>
+    </top>
+
+    <!-- ====== SIDEBAR IZQUIERDO ====== -->
+    <left>
+        <VBox fx:id="sidebar" style="-fx-background-color: #34495E; -fx-padding: 10; -fx-spacing: 5;" prefWidth="200">
+            <Label text="📋 MENÚ" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 0 10 0;"/>
+            
+            <Button fx:id="btnDashboard" text="📊 Dashboard" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left;"/>
+            <Button fx:id="btnUsuarios" text="👥 Usuarios" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left;"/>
+            <Button fx:id="btnVentas" text="💰 Ventas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left;"/>
+            <Button fx:id="btnReportes" text="📊 Reportes" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left;"/>
+            <Button fx:id="btnConfiguracion" text="⚙️ Configuración" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left;"/>
+            
+            <Separator style="-fx-background-color: #2C3E50;"/>
+            <Label text="📂 EXPLORADOR" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 0 5 0;"/>
+            <TreeView fx:id="treeView" style="-fx-background-color: #34495E; -fx-text-fill: white;" prefHeight="200"/>
+        </VBox>
+    </left>
+
+    <!-- ====== CONTENIDO PRINCIPAL ====== -->
+    <center>
+        <StackPane fx:id="contenidoPrincipal" style="-fx-background-color: #ECF0F1;">
+            <!-- El contenido se carga dinámicamente desde el controlador -->
+        </StackPane>
+    </center>
+
+</BorderPane>

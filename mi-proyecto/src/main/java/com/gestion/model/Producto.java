@@ -12,7 +12,6 @@ public class Producto {
     private Double existencias;
     private Double minimoExistencias;
     private Boolean activo;
-
     // Constructor 
 
     /*

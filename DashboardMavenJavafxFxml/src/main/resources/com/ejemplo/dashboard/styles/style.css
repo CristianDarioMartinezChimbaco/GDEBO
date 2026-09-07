@@ -1,0 +1,68 @@
+/* Estilos generales */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Botones del sidebar */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}
+
+.button:hover {
+    -fx-opacity: 0.8;
+}
+
+/* Tablas */
+.table-view {
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5;
+}
+
+.table-view .column-header {
+    -fx-background-color: #34495E;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.table-row-cell:even {
+    -fx-background-color: white;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #e8f4f8;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Tabs (si los usas) */
+.tab-pane .tab-header-area {
+    -fx-background-color: #ECF0F1;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #BDC3C7;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+}
+
+/* Tooltips */
+.tooltip {
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+}

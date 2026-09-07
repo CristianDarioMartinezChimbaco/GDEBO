@@ -7,7 +7,18 @@
   <version>1.0-SNAPSHOT</version>
   <name>mi-proyecto</name>
   <url>http://maven.apache.org</url>
-  
+
+  <plugins>
+    <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.8</version>
+        <configuration>
+            <mainClass>HelloFX</mainClass>
+        </configuration>
+    </plugin>
+  </plugins>
+
   <properties>
     <maven.compiler.source>25</maven.compiler.source>
     <maven.compiler.target>25</maven.compiler.target>
@@ -31,6 +42,10 @@
       <artifactId>sqlite-jdbc</artifactId>
       <version>3.50.3.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>26.0.2</version>
+    </dependency>
   </dependencies>
-
 </project>

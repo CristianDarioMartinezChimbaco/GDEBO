@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.ejemplo.dashboard.controller.UsuariosController"
+      style="-fx-padding: 20;">
+
+    <!-- Barra de herramientas -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField promptText="🔍 Buscar usuario..." prefWidth="300"/>
+        <Button text="🔍 Buscar" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+        <Button text="➕ Nuevo Usuario" style="-fx-background-color: #2ECC71; -fx-text-fill: white;"/>
+        <Button text="🔄 Actualizar" style="-fx-background-color: #F39C12; -fx-text-fill: white;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="Mostrando 8 usuarios" style="-fx-text-fill: #7F8C8D; -fx-font-size: 12;"/>
+    </HBox>
+
+    <!-- Tabla de Usuarios - CON TODOS LOS fx:id -->
+    <TableView fx:id="tablaUsuarios" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="colIdUsuario" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colNombreUsuario" text="Nombre" prefWidth="150"/>
+            <TableColumn fx:id="colEmailUsuario" text="Email" prefWidth="200"/>
+            <TableColumn fx:id="colRolUsuario" text="Rol" prefWidth="100"/>
+            <TableColumn fx:id="colActivoUsuario" text="Estado" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <!-- Paginación -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="◄ Anterior"/>
+        <Label text="Página 1 de 1"/>
+        <Button text="Siguiente ►"/>
+    </HBox>
+
+</VBox>

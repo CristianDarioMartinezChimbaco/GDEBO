@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="15"
+      xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.ejemplo.dashboard.controller.DashboardController"
+      style="-fx-padding: 20;">
+
+    <HBox spacing="15" alignment="CENTER">
+
+        <VBox prefWidth="200"
+              alignment="CENTER"
+              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+
+            <Label text="Usuarios"
+                   style="-fx-font-size: 14; -fx-text-fill: #7F8C8D;"/>
+
+            <Label fx:id="lblTotalUsuarios"
+                   text="0"
+                   style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+
+            <Label fx:id="lblUsuariosActivos"
+                   text="0 activos"
+                   style="-fx-font-size: 12; -fx-text-fill: #2ECC71;"/>
+
+        </VBox>
+
+
+        <VBox prefWidth="200"
+              alignment="CENTER"
+              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+
+            <Label text="Ventas"
+                   style="-fx-font-size: 14; -fx-text-fill: #7F8C8D;"/>
+
+            <Label fx:id="lblTotalVentas"
+                   text="0"
+                   style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+
+            <Label text="Transacciones"
+                   style="-fx-font-size: 12; -fx-text-fill: #3498DB;"/>
+
+        </VBox>
+
+
+        <VBox prefWidth="200"
+              alignment="CENTER"
+              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+
+            <Label text="Ingresos"
+                   style="-fx-font-size: 14; -fx-text-fill: #7F8C8D;"/>
+
+            <Label fx:id="lblIngresosTotales"
+                   text="$0.00"
+                   style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #27AE60;"/>
+
+            <Label text="Totales"
+                   style="-fx-font-size: 12; -fx-text-fill: #2ECC71;"/>
+
+        </VBox>
+
+
+        <VBox prefWidth="200"
+              alignment="CENTER"
+              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+
+            <Label text="Crecimiento"
+                   style="-fx-font-size: 14; -fx-text-fill: #7F8C8D;"/>
+
+            <Label text="15.8 por ciento"
+                   style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #E74C3C;"/>
+
+            <Label text="vs mes anterior"
+                   style="-fx-font-size: 12; -fx-text-fill: #95A5A6;"/>
+
+        </VBox>
+
+    </HBox>
+
+
+    <VBox style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+
+        <Label text="Ventas Semanales"
+               style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+        <BarChart fx:id="barChart"
+                  prefHeight="300"
+                  prefWidth="600">
+
+            <xAxis>
+                <CategoryAxis fx:id="xAxis"
+                              label="Dias"/>
+            </xAxis>
+
+            <yAxis>
+                <NumberAxis fx:id="yAxis"
+                             label="Ventas"/>
+            </yAxis>
+
+        </BarChart>
+
+    </VBox>
+
+</VBox>

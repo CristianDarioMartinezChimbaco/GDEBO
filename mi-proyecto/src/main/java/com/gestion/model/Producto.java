@@ -11,6 +11,7 @@ public class Producto {
     private Double precio;
     private Double existencias;
     private Double minimoExistencias;
+    //private Integer activo;
 
     // Constructor 
     /*
@@ -62,6 +63,12 @@ public class Producto {
     public Double conseguirMinimoExistencias() {
       return minimoExistencias; 
     }
+    
+    /*
+    public Integer conseguirActivo() {
+      return activo; 
+    }
+    */
 
     // Setters
     public void colocarId(Integer id) { 
@@ -104,6 +111,12 @@ public class Producto {
       this.minimoExistencias = minimoExistencias; 
     }
 
+    /*
+    public void colocarActivo(Integer activo) { 
+      this.activo = activo; 
+    }
+    */
+   
     // Metodos
 
 }

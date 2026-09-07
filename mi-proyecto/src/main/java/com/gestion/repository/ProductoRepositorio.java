@@ -3,15 +3,25 @@ package com.gestion.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import com.gestion.model.Producto;
 
-
-
 public class ProductoRepositorio {
-
-    // Create
-    private String crearTabla = "CREATE TABLE IF NOT EXISTS producto ( "
+    private static final String[] campos = {"id",
+            "codigo_barras",
+            "nombre_producto",
+            "marca",
+            "cantidad_producto",
+            "unidad_medida",
+            "unidad_agrupada",
+            "precio_venta",
+            "existencias",
+            "minimo_existencias",
+            "activo" 
+    };
+        // Create
+    private static String crearTabla = "CREATE TABLE IF NOT EXISTS producto ( "
         + "id INTEGER PRIMARY KEY, "
         + "codigo_barras TEXT UNIQUE, "
         + "nombre_producto TEXT NOT NULL, "
@@ -22,15 +32,31 @@ public class ProductoRepositorio {
         + "precio_venta REAL NOT NULL, "
         + "existencias REAL, "
         + "minimo_existencias REAL, "
-        + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id) "
-        + "); "
+        + "activo INTEGER NOT NULL DEFAULT 1 CHECK (activo IN (0, 1)), "
+        + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id)); "
     ;
-    private String consultaInsertar = "INSERT INTO producto VALUES "
-        + "(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?,); "
+    private String consultaInsertar = "INSERT INTO producto "
+        + "(codigo_barras, "
+        + "nombre_producto, "
+        + "marca, "
+        + "cantidad_producto, "
+        + "unidad_medida, "
+        + "unidad_agrupada, "
+        + "precio_venta, "
+        + "existencias, "
+        + "minimo_existencias) "
+        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); "
     ;
-    // Read
-    private String consulta = "SELECT * FROM producto; ";
-    // Update
+        // Read
+    private static String consultaTodo = "SELECT * FROM producto WHERE activo = 1; ";
+    private static String consultaCodigoBarras = "SELECT nombre_producto FROM producto WHERE activo = 1; ";
+    private static String consultaNombre = "SELECT * FROM producto WHERE activo = 1; ";
+    private static String consultaMarca = "SELECT * FROM producto WHERE activo = 1; ";
+    private static String consultaCantidad = "SELECT * FROM producto WHERE activo = 1; ";
+    private static String consultaUnidadMedida = "SELECT * FROM producto WHERE activo = 1; ";
+    private static String consultaUnidadAgrupada = "SELECT * FROM producto WHERE activo = 1; ";
+    private static String consultaPrecio = "SELECT * FROM producto WHERE activo = 1; ";
+        // Update
     private String consultaActualizar = "UPDATE producto " 
         + "SET codigo_barras = ?, "
         + "nombre_producto = ?, "
@@ -43,68 +69,109 @@ public class ProductoRepositorio {
         + "minimo_existencias = ? " 
         + "WHERE id = ?; "
     ; 
-    // Delete    
-    private String ConsultaBorrar = "DELETE FROM producto WHERE id = ?; ";
+        // Delete    
+    private String consultaBorrar = "UPDATE producto SET activo = 0 WHERE id = ?; ";
     // Getters
 
     // Setters
 
     // Metodos
 
-    public String crearConsultaFiltro(Producto producto) {
-        String resultado = "SELECT * FROM producto WHERE 1=1 ";
-        if (producto.conseguirId() != null && producto.conseguirId() >= 0) {
-            resultado += "AND id = ? ";
-        }
-        if (
-            producto.conseguirCodigoBarras() != null
-            && !producto.conseguirCodigoBarras().isBlank()
-        ) {
-            resultado += "AND codigo_barras = ? ";
-        }
-        if (producto.conseguirNombre() != null
-                && !producto.conseguirNombre().isBlank()) {
-            resultado += "AND nombre_producto = ? ";
-        }
-        if (producto.conseguirMarca() != null
-                && !producto.conseguirMarca().isBlank()) {
-            resultado += "AND marca = ? ";
-        }
-        if (producto.conseguirCantidadProducto() >= 0) {
-            resultado += "AND cantidad_producto = ? ";
-        }
-        if (producto.conseguirUnidadMedida() != null
-                && !producto.conseguirUnidadMedida().isBlank()) {
-            resultado += "AND unidad_medida = ? ";
-        }
-        if (producto.conseguirUnidadAgrupada() >= 0) {
-            resultado += "AND unidad_agrupada = ? ";
-        }
-        if (producto.conseguirPrecio() >= 0) {
-            resultado += "AND precio_venta = ? ";
-        }
-        if (producto.conseguirExistencias() >= 0) {
-            resultado += "AND existencias = ? ";
-        }
-        if (producto.conseguirMinimoExistencias() >= 0) {
-            resultado += "AND minimo_existencias = ? ";
-        }
-        return resultado + "; ";
-    }
-
-    public void generarTabla(){
-        try (Connection conexion = Conexion.conectar()){
+        // Create
+     public void generarTabla(){
+        try (Connection conexion = ConexionBaseDatos.conectar()){
             conexion.createStatement().execute(crearTabla);
-        } 
-        catch (Exception e){
-            System.out.print("ERROR: " + e);
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
     public void agregarProducto(Producto producto) {
         try (
-            Connection conexion = Conexion.conectar();
+            Connection conexion = ConexionBaseDatos.conectar();
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(consultaInsertar)
+        ) {      
+            sentenciaPreparada.setString(1, producto.conseguirCodigoBarras()); // Empieza en 1
+            sentenciaPreparada.setString(2, producto.conseguirNombre());
+            sentenciaPreparada.setString(3, producto.conseguirMarca());
+            sentenciaPreparada.setDouble(4, producto.conseguirCantidadProducto());
+            sentenciaPreparada.setString(5, producto.conseguirUnidadMedida());
+            sentenciaPreparada.setInt(6, producto.conseguirUnidadAgrupada());
+            sentenciaPreparada.setDouble(7, producto.conseguirPrecio());
+            sentenciaPreparada.setDouble(8, producto.conseguirExistencias());
+            sentenciaPreparada.setDouble(9, producto.conseguirMinimoExistencias());
+            sentenciaPreparada.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+        // Read
+    public String crearConsultaFiltro(String[] filtros) {
+        ///////////////////////////////////////////////////////////////
+        // OJO ESCAPAR FILTROS /////////////////////////////////////
+        /////////////////////////////////////////////////////////////
+        String resultado = "SELECT * FROM producto WHERE activo = 1 ";
+        if (filtros != null && filtros.length == 10 ){
+            for(int i = 0; i < 10; i++) {
+                if (filtros[i] != null && !filtros[i].isBlank()) {
+                    if (filtros[i].equals("NULL")){
+                        resultado += "AND " 
+                        + campos[i] 
+                        + " IS NULL ";
+                    } else {
+                        resultado += "AND " 
+                        + campos[i] 
+                        + " = " 
+                        + filtros[i]
+                        + " ";
+                    }
+                }
+            }
+        } else {
+            throw new IllegalArgumentException(
+                "El arreglo de filtros debe contener exactamente 10 elementos");
+        }
+        return resultado + "; ";
+    }
+
+    public ArrayList<Producto> consultar(String[] consulta){
+        ArrayList<Producto> productos = new ArrayList<>();
+        String consultaFinal;
+        if (consulta != null){
+            consultaFinal = crearConsultaFiltro(consulta);
+        } else {
+            consultaFinal = consultaTodo;
+        }      
+        try (
+            Connection conexion = ConexionBaseDatos.conectar();
+            ResultSet conjuntoResultados = conexion.createStatement().executeQuery(consultaFinal)
+        ) {
+            while (conjuntoResultados.next()) {
+                Producto producto = new Producto();
+                producto.colocarId(conjuntoResultados.getInt("id"));
+                producto.colocarCodigoBarras(conjuntoResultados.getString("codigo_barras"));
+                producto.colocarNombre(conjuntoResultados.getString("nombre_producto"));
+                producto.colocarMarca(conjuntoResultados.getString("marca"));
+                producto.colocarCantidadProducto(conjuntoResultados.getDouble("cantidad_producto"));
+                producto.colocarUnidadMedida(conjuntoResultados.getString("unidad_medida"));
+                producto.colocarUnidadAgrupada(conjuntoResultados.getInt("unidad_agrupada"));
+                producto.colocarPrecio(conjuntoResultados.getDouble("precio_venta"));
+                producto.colocarExistencias(conjuntoResultados.getDouble("existencias"));
+                producto.colocarMinimoExistencias(conjuntoResultados.getDouble("minimo_existencias"));
+                productos.add(producto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productos;
+    }
+        // Update
+        // consultaFiltro(id) -> 
+    public void EditarProducto(Producto producto) {
+        try (
+            Connection conexion = ConexionBaseDatos.conectar();
+            PreparedStatement sentenciaPreparada = conexion.prepareStatement(consultaActualizar)
         ) {
             sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
             sentenciaPreparada.setString(2, producto.conseguirNombre());
@@ -113,79 +180,22 @@ public class ProductoRepositorio {
             sentenciaPreparada.setString(5, producto.conseguirUnidadMedida());
             sentenciaPreparada.setInt(6, producto.conseguirUnidadAgrupada());
             sentenciaPreparada.setDouble(7, producto.conseguirPrecio());
-            sentenciaPreparada.setInt(8, producto.conseguirExistencias());
-            sentenciaPreparada.setInt(9, producto.conseguirMinimoExistencias());
+            sentenciaPreparada.setDouble(8, producto.conseguirExistencias());
+            sentenciaPreparada.setDouble(9, producto.conseguirMinimoExistencias());
+            sentenciaPreparada.setInt(10, producto.conseguirId());  
             sentenciaPreparada.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    public void consultaEstrella(){
+        // Delete
+    public void BorrarProducto(Integer id) {
         try (
-            Connection conexion = Conexion.conectar();
-            ResultSet rs = conexion.createStatement().executeQuery(consulta)
-        ) {
-            while (rs.next()) {
-                System.out.println(
-                    rs.getInt("id") + " - " +
-                    rs.getString("nombre") + " - $" +
-                    rs.getDouble("precio")
-                );
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void consultaFiltro(Producto producto){
-        try (
-            Connection conexion = Conexion.conectar();
-            ResultSet rs = conexion.createStatement().executeQuery(crearConsultaFiltro(producto))
-        ) {
-            while (rs.next()) {
-                System.out.println(
-                    rs.getInt("id") + " - " +
-                    rs.getString("nombre") + " - $" +
-                    rs.getDouble("precio")
-                );
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    
-    public void ejecutar() {
-        try (Connection conexion = Conexion.conectar()) {
-
-            // Crear tabla
-            conexion.createStatement().execute(crearTabla);
-
-            // Insertar producto
-            try (PreparedStatement ps = conexion.prepareStatement(insertar)) {
-
-                ps.setString(1, "Arroz Diana");
-                ps.setDouble(2, 5000);
-
-                ps.executeUpdate();
-            }
-
-            // Consultar
-            try (ResultSet rs =
-                            conexion.createStatement().executeQuery(consultar)) {
-
-                while (rs.next()) {
-                    System.out.println(
-                            rs.getInt("id") + " - " +
-                            rs.getString("nombre") + " - $" +
-                            rs.getDouble("precio")
-                    );
-                }
-            }
-
+            Connection conexion = ConexionBaseDatos.conectar();
+            PreparedStatement sentenciaPreparada = conexion.prepareStatement(consultaBorrar)
+        ) { 
+            sentenciaPreparada.setInt(1, id); 
+            sentenciaPreparada.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }

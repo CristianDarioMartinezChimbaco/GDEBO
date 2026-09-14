@@ -12,12 +12,16 @@ public class Producto {
     private Double existencias;
     private Double minimoExistencias;
     private Boolean activo;
-    // Constructor 
 
-    /*
-    public Producto(String codigoBarras, 
-      String nombre, 
-      String marca, 
+    // Constructor 
+    public Producto() {
+      //Vacio
+    }
+
+    public Producto(
+      String codigoBarras,
+      String nombre,
+      String marca,
       Double cantidadProducto,
       String unidadMedida,
       Integer unidadAgrupada,
@@ -28,9 +32,14 @@ public class Producto {
         this.codigoBarras = codigoBarras;
         this.nombre = nombre;
         this.marca = marca;
+        this.cantidadProducto = cantidadProducto;
+        this.unidadMedida = unidadMedida;
+        this.unidadAgrupada = unidadAgrupada;
         this.precio = precio;
-    }
-      */
+        this.existencias = existencias;
+        this.minimoExistencias = minimoExistencias;
+        this.activo = activo;
+      }
 
     // Getters
     public Integer conseguirId() {
@@ -123,5 +132,35 @@ public class Producto {
     }
 
     // Metodos
-
+    @Override
+    public String toString() {
+      return id
+        + " - " + codigoBarras
+        + " - " + nombre
+        + " - " + marca
+      ;
+    }
+    /*
+    @Override
+    public String toString() {
+      return "Código: " 
+        + codigoBarras 
+        + " | Nombre: " 
+        + nombre 
+        + " | Marca: " 
+        + marca 
+        + " | Cantidad: " 
+        + cantidadProducto 
+        + " " 
+        + unidadMedida 
+        + " | U.A: "
+        + unidadAgrupada
+        + " | Precio: " 
+        + precio 
+        + " | Existencias: " 
+        + existencias 
+        + " | Mínimo: " 
+        + minimoExistencias;
+    }
+    */
 }

@@ -17,13 +17,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="1017.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="1017.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.producto.ProductoControlador">
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="1110.0" prefWidth="138.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="56.0" fitWidth="87.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../images/lpg_logo.png" />
+                  <Image url="@../../../../../../images/lpg_logo.png" />
                </image>
                <VBox.margin>
                   <Insets top="15.0" />
@@ -40,6 +40,7 @@
             <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" text="Clientes" />
             <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" text="Ventas" />
             <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" text="Alertas" />
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" text="Reportes" />
             <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" text="Salir" />
          </children>
       </VBox>
@@ -47,11 +48,11 @@
    <center>
       <VBox prefHeight="1012.0" prefWidth="1387.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane prefHeight="64.0" prefWidth="1052.0">
+            <GridPane alignment="TOP_CENTER" prefHeight="64.0" prefWidth="1052.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -62,35 +63,31 @@
                         <Font size="30.0" />
                      </font>
                   </Label>
+                  <Button fx:id="botonAgregar" contentDisplay="CENTER" mnemonicParsing="false" onAction="#abrirFormularioAgregar" text="Agregrar +" textAlignment="CENTER" GridPane.columnIndex="2" />
                </children>
             </GridPane>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                <children>
-                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="1052.0" spacing="15.0">
+                  <HBox alignment="TOP_CENTER" prefHeight="45.0" prefWidth="849.0" spacing="15.0">
                      <children>
-                        <ComboBox prefWidth="150.0" promptText="Codigo de barras" />
-                        <ComboBox prefWidth="150.0" promptText="Nombre producto" />
-                        <ComboBox prefWidth="150.0" promptText="Marca/Distribuidor" />
-                        <ComboBox prefWidth="150.0" promptText="Cantidad" />
-                        <ComboBox prefWidth="150.0" promptText="Unidad medida" />
-                        <ComboBox prefWidth="150.0" promptText="Unidad agrupada" />
-                        <ComboBox prefWidth="150.0" promptText="Precio" />
-                        <ComboBox prefWidth="150.0" promptText="Existencias" />
-                        <ComboBox prefWidth="150.0" promptText="Min existencias" />
+                        <ComboBox editable="true" prefWidth="150.0" promptText="Codigo de barras" />
+                        <ComboBox editable="true" prefWidth="150.0" promptText="Nombre producto" />
+                        <ComboBox editable="true" prefWidth="150.0" promptText="Marca/Distribuidor" />
+                        <ComboBox editable="true" prefWidth="150.0" promptText="Precio" />
                      </children>
                   </HBox>
-                  <TableView fx:id="tablaProductos" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tablaProductos" prefHeight="325.0" prefWidth="849.0">
                     <columns>
                       <TableColumn fx:id="columnaCodigo" prefWidth="75.0" text="Codigo" />
                       <TableColumn fx:id="columnaNombre" prefWidth="75.0" text="Nombre" />
-                        <TableColumn fx:id="columnaMarca" prefWidth="75.0" text="Marca/Distribuidor" />
-                        <TableColumn fx:id="columnaCantidad" prefWidth="75.0" text="Cantidad" />
-                        <TableColumn fx:id="columnaUnidadMedida" prefWidth="75.0" text="Unidad medida" />
-                        <TableColumn fx:id="columnaUnidadAgrupada" prefWidth="75.0" text="Unidad agrupada" />
-                        <TableColumn fx:id="columnaPrecio" prefWidth="75.0" text="Precio" />
-                        <TableColumn fx:id="columnaExistencias" prefWidth="75.0" text="Existencias" />
-                        <TableColumn fx:id="columnaMinimoExistencias" prefWidth="75.0" text="Min existencias" />
-                        <TableColumn fx:id="columnaEditar" prefWidth="75.0" text="Editar" />
+                      <TableColumn fx:id="columnaMarca" prefWidth="75.0" text="Marca/Distribuidor" />
+                      <TableColumn fx:id="columnaCantidad" prefWidth="75.0" text="Cantidad" />
+                      <TableColumn fx:id="columnaUnidadMedida" prefWidth="75.0" text="Unidad medida" />
+                      <TableColumn fx:id="columnaUnidadAgrupada" prefWidth="75.0" text="Unidad agrupada" />
+                      <TableColumn fx:id="columnaPrecio" prefWidth="75.0" text="Precio" />
+                      <TableColumn fx:id="columnaExistencias" prefWidth="75.0" text="Existencias" />
+                      <TableColumn fx:id="columnaMinimoExistencias" prefWidth="75.0" text="Min existencias" />
+                      <TableColumn fx:id="columnaEditar" prefWidth="75.0" text="Editar" />
                     </columns>
                   </TableView>
                </children>

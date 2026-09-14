@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="747.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.producto.ProductoAgregarControlador">
+   <children>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="TOP_CENTER" text="Agregar producto" GridPane.columnIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <Label text="Codigo de barras" textAlignment="CENTER" />
+      <TextField fx:id="txtCodigoBarras" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </TextField>
+      <Label text="Nombre del producto" textAlignment="CENTER" />
+      <TextField fx:id="txtNombreProducto" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <Label text="Marca o distribuidor" textAlignment="CENTER" />
+      <TextField fx:id="txtMarca" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <Label text="Cantidad de producto" textAlignment="CENTER" />
+      <TextField fx:id="txtCantidadProducto" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <RadioButton fx:id="unidadMedida" mnemonicParsing="false" selected="true" text="Unidad de medida">
+         <toggleGroup>
+            <ToggleGroup fx:id="grupoTipoUnidad" />
+         </toggleGroup>
+      </RadioButton>
+      <ComboBox fx:id="txtUnidadMedida" editable="true" maxWidth="300.0" minWidth="300.0" prefHeight="26.0" prefWidth="300.0" />
+      <RadioButton fx:id="unidadAgrupada" mnemonicParsing="false" text="Unidad agrupada" toggleGroup="$grupoTipoUnidad" />
+      <ComboBox fx:id="txtUnidadAgrupada" disable="true" editable="true" maxWidth="300.0" minWidth="300.0" prefHeight="26.0" prefWidth="300.0" />
+      <Label text="Precio" textAlignment="CENTER" />
+      <TextField fx:id="txtPrecio" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <Label text="Existencias" textAlignment="CENTER" />
+      <TextField fx:id="txtExistencias" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <Label text="Minimo de existencias" textAlignment="CENTER" />
+      <TextField fx:id="txtMinimoExistencias" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <HBox alignment="CENTER" prefHeight="48.0" prefWidth="600.0" spacing="10.0">
+         <children>
+            <Button fx:id="botonAceptar" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" />
+            <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

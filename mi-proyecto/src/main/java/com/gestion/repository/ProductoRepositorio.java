@@ -3,12 +3,16 @@ package com.gestion.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.gestion.model.Producto;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class ProductoRepositorio {
-    private static final String[] campos = {"id",
+    private static final String[] CAMPOS = {"id",
             "codigo_barras",
             "nombre_producto",
             "marca",
@@ -21,21 +25,21 @@ public class ProductoRepositorio {
             "activo" 
     };
         // Create
-    private static String crearTabla = "CREATE TABLE IF NOT EXISTS producto ( "
+    private static final String CREAR_TABLA = "CREATE TABLE IF NOT EXISTS producto ( "
         + "id INTEGER PRIMARY KEY, "
         + "codigo_barras TEXT UNIQUE, "
         + "nombre_producto TEXT NOT NULL, "
         + "marca TEXT NOT NULL, "
-        + "cantidad_producto REAL NOT NULL, "
+        + "cantidad_producto REAL, "
         + "unidad_medida TEXT, "
         + "unidad_agrupada INTEGER, "
         + "precio_venta REAL NOT NULL, "
-        + "existencias REAL, "
-        + "minimo_existencias REAL, "
+        + "existencias REAL NOT NULL, "
+        + "minimo_existencias REAL NOT NULL, "
         + "activo INTEGER NOT NULL DEFAULT 1 CHECK (activo IN (0, 1)), "
-        + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id)); "
+        + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id));"
     ;
-    private String consultaInsertar = "INSERT INTO producto "
+    private static final String CONSULTA_INSERTAR = "INSERT INTO producto "
         + "(codigo_barras, "
         + "nombre_producto, "
         + "marca, "
@@ -45,19 +49,15 @@ public class ProductoRepositorio {
         + "precio_venta, "
         + "existencias, "
         + "minimo_existencias) "
-        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); "
+        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
     ;
         // Read
-    private static String consultaTodo = "SELECT * FROM producto WHERE activo = 1; ";
-    private static String consultaCodigoBarras = "SELECT nombre_producto FROM producto WHERE activo = 1; ";
-    private static String consultaNombre = "SELECT * FROM producto WHERE activo = 1; ";
-    private static String consultaMarca = "SELECT * FROM producto WHERE activo = 1; ";
-    private static String consultaCantidad = "SELECT * FROM producto WHERE activo = 1; ";
-    private static String consultaUnidadMedida = "SELECT * FROM producto WHERE activo = 1; ";
-    private static String consultaUnidadAgrupada = "SELECT * FROM producto WHERE activo = 1; ";
-    private static String consultaPrecio = "SELECT * FROM producto WHERE activo = 1; ";
+    private static final String CONSULTA_TODO = "SELECT " 
+        + "id, codigo_barras, nombre_producto, marca, cantidad_producto, "
+        + "unidad_medida, unidad_agrupada, precio_venta, existencias, "
+        + "minimo_existencias FROM producto WHERE activo = 1;";
         // Update
-    private String consultaActualizar = "UPDATE producto " 
+    private static final String CONSULTA_ACTUALIZAR = "UPDATE producto " 
         + "SET codigo_barras = ?, "
         + "nombre_producto = ?, "
         + "marca = ?,"
@@ -67,88 +67,113 @@ public class ProductoRepositorio {
         + "precio_venta = ?, "
         + "existencias = ?, " 
         + "minimo_existencias = ? " 
-        + "WHERE id = ?; "
+        + "WHERE id = ?;"
     ; 
         // Delete    
-    private String consultaBorrar = "UPDATE producto SET activo = 0 WHERE id = ?; ";
-    // Getters
-
-    // Setters
+    private static final String CONSULTA_BORRAR = "UPDATE producto SET activo = 0 WHERE id = ?;";
+    
+    // Constructor
+    public ProductoRepositorio(){
+        generarTabla();
+    }
 
     // Metodos
 
         // Create
-     public void generarTabla(){
-        try (Connection conexion = ConexionBaseDatos.conectar()){
-            conexion.createStatement().execute(crearTabla);
-        } catch (Exception e){
-            System.out.println("Error al crear la tabla producto: " + e.getMessage());
-            e.printStackTrace();
+    private void generarTabla(){
+        try (
+            Connection conexion = ConexionBaseDatos.conectar();
+            Statement sentencia = conexion.createStatement()) {
+            sentencia.execute(CREAR_TABLA);
+        } catch (SQLException e) {
+            throw new RuntimeException("No se pudo crear la tabla producto ", e);
         }
     }
 
     public void agregarProducto(Producto producto) {
         try (
             Connection conexion = ConexionBaseDatos.conectar();
-            PreparedStatement sentenciaPreparada = conexion.prepareStatement(consultaInsertar)
+            PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_INSERTAR)
         ) {      
             sentenciaPreparada.setString(1, producto.conseguirCodigoBarras()); // Empieza en 1
             sentenciaPreparada.setString(2, producto.conseguirNombre());
             sentenciaPreparada.setString(3, producto.conseguirMarca());
             sentenciaPreparada.setDouble(4, producto.conseguirCantidadProducto());
             sentenciaPreparada.setString(5, producto.conseguirUnidadMedida());
-            sentenciaPreparada.setInt(6, producto.conseguirUnidadAgrupada());
+            sentenciaPreparada.setObject(6, producto.conseguirUnidadAgrupada());
             sentenciaPreparada.setDouble(7, producto.conseguirPrecio());
             sentenciaPreparada.setDouble(8, producto.conseguirExistencias());
             sentenciaPreparada.setDouble(9, producto.conseguirMinimoExistencias());
             sentenciaPreparada.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.print("ERROR SQL: " + e);
+            throw new RuntimeException("No se pudo agregar producto ", e);
         }
     }
 
-        // Read
-    public String crearConsultaFiltro(String[] filtros) {
-        ///////////////////////////////////////////////////////////////
-        // OJO ESCAPAR FILTROS /////////////////////////////////////
-        /////////////////////////////////////////////////////////////
-        String resultado = "SELECT * FROM producto WHERE activo = 1 ";
-        if (filtros != null && filtros.length == 10 ){
-            for(int i = 0; i < 10; i++) {
-                if (filtros[i] != null && !filtros[i].isBlank()) {
-                    if (filtros[i].equals("NULL")){
-                        resultado += "AND " 
-                        + campos[i] 
-                        + " IS NULL ";
-                    } else {
-                        resultado += "AND " 
-                        + campos[i] 
-                        + " = " 
-                        + filtros[i]
-                        + " ";
-                    }
-                }
-            }
-        } else {
-            throw new IllegalArgumentException(
-                "El arreglo de filtros debe contener exactamente 10 elementos");
-        }
-        return resultado + "; ";
+        // Read    
+    public ObservableList<Producto> consultarTodo() {
+        return consultar(CONSULTA_TODO);
     }
 
-    public ArrayList<Producto> consultarTodo() {
-        return consultar(consultaTodo);
+    public ObservableList<String> consultarColumnaNombreProducto(){
+        return consultarColumna(CAMPOS[2]);
     }
 
-    public ArrayList<Producto> consultarFiltro(String[] consulta) {
-        return consultar(crearConsultaFiltro(consulta));
+    public ObservableList<String> consultarColumnaMarca(){
+        return consultarColumna(CAMPOS[3]);
     }
 
-    public ArrayList<Producto> consultar(String consultaFinal){
-        ArrayList<Producto> productos = new ArrayList<>();    
+    public ObservableList<String> consultarColumnaCantidadProducto(){
+        return consultarColumna(CAMPOS[4]);
+    }
+
+    public ObservableList<String> consultarColumnaUnidadMedida(){
+        return consultarColumna(CAMPOS[5]);
+    }
+
+    public ObservableList<String> consultarColumnaUnidadAgrupada(){
+        return consultarColumna(CAMPOS[6]);
+    }
+
+    public ObservableList<String> consultarColumnaPrecio(){
+        return consultarColumna(CAMPOS[7]);
+    }
+
+    public ObservableList<String> consultarColumnaExistencias(){
+        return consultarColumna(CAMPOS[8]);
+    }
+
+    public ObservableList<String> consultarColumnaMinimoExistencias(){
+        return consultarColumna(CAMPOS[9]);
+    }
+
+    private ObservableList<String> consultarColumna(String nombreColumna){
+        ObservableList<String> columna = FXCollections.observableArrayList();
+        String consultaFinal = "SELECT " 
+            + nombreColumna
+            + " FROM producto WHERE activo = 1; "
+        ;
         try (
             Connection conexion = ConexionBaseDatos.conectar();
-            ResultSet conjuntoResultados = conexion.createStatement().executeQuery(consultaFinal)
+            Statement sentencia = conexion.createStatement();
+            ResultSet conjuntoResultados = sentencia.executeQuery(consultaFinal)
+        ) {
+            while (conjuntoResultados.next()) {
+                columna.add(conjuntoResultados.getString(nombreColumna));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al consultar la columna " + nombreColumna, e);
+        }
+        return columna;
+    }
+
+    private ObservableList<Producto> consultar(String consultaFinal){
+        ObservableList<Producto> productos = FXCollections.observableArrayList();    
+        try (
+            Connection conexion = ConexionBaseDatos.conectar();
+            Statement sentencia = conexion.createStatement();
+            ResultSet conjuntoResultados = sentencia.executeQuery(consultaFinal)
         ) {
             while (conjuntoResultados.next()) {
                 Producto producto = new Producto();
@@ -158,49 +183,50 @@ public class ProductoRepositorio {
                 producto.colocarMarca(conjuntoResultados.getString("marca"));
                 producto.colocarCantidadProducto(conjuntoResultados.getDouble("cantidad_producto"));
                 producto.colocarUnidadMedida(conjuntoResultados.getString("unidad_medida"));
-                producto.colocarUnidadAgrupada(conjuntoResultados.getInt("unidad_agrupada"));
+                producto.colocarUnidadAgrupada((Integer) conjuntoResultados.getObject("unidad_agrupada"));
                 producto.colocarPrecio(conjuntoResultados.getDouble("precio_venta"));
                 producto.colocarExistencias(conjuntoResultados.getDouble("existencias"));
                 producto.colocarMinimoExistencias(conjuntoResultados.getDouble("minimo_existencias"));
                 productos.add(producto);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al consultar productos ", e);
         }
         return productos;
     }
+
         // Update
-        // consultaFiltro(id) -> 
-    public void EditarProducto(Producto producto) {
+    public void editarProducto(Producto producto) {
         try (
             Connection conexion = ConexionBaseDatos.conectar();
-            PreparedStatement sentenciaPreparada = conexion.prepareStatement(consultaActualizar)
+            PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_ACTUALIZAR)
         ) {
             sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
             sentenciaPreparada.setString(2, producto.conseguirNombre());
             sentenciaPreparada.setString(3, producto.conseguirMarca());
             sentenciaPreparada.setDouble(4, producto.conseguirCantidadProducto());
             sentenciaPreparada.setString(5, producto.conseguirUnidadMedida());
-            sentenciaPreparada.setInt(6, producto.conseguirUnidadAgrupada());
+            sentenciaPreparada.setObject(6, producto.conseguirUnidadAgrupada());
             sentenciaPreparada.setDouble(7, producto.conseguirPrecio());
             sentenciaPreparada.setDouble(8, producto.conseguirExistencias());
             sentenciaPreparada.setDouble(9, producto.conseguirMinimoExistencias());
             sentenciaPreparada.setInt(10, producto.conseguirId());  
             sentenciaPreparada.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al editar producto ", e);
         }
     }
+
         // Delete
-    public void BorrarProducto(Integer id) {
+    public void borrarProducto(Integer id) {
         try (
             Connection conexion = ConexionBaseDatos.conectar();
-            PreparedStatement sentenciaPreparada = conexion.prepareStatement(consultaBorrar)
+            PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_BORRAR)
         ) { 
             sentenciaPreparada.setInt(1, id); 
             sentenciaPreparada.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al borrar producto ", e);
         }
     }
 }

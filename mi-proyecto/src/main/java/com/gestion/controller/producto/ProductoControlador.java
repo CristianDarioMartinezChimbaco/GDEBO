@@ -24,9 +24,7 @@ import javafx.stage.Stage;
 public class ProductoControlador {
 
     private final ProductoRepositorio productoRepositorio = new ProductoRepositorio();
-    private final ObservableList<Producto> productosObservables = 
-        FXCollections.observableArrayList();
-
+    private final ObservableList<Producto> productosObservables = FXCollections.observableArrayList();
     @FXML private TableView<Producto> tablaProductos;
     @FXML private TableColumn<Producto, String> columnaCodigo;
     @FXML private TableColumn<Producto, String> columnaNombre;
@@ -70,9 +68,7 @@ public class ProductoControlador {
 
     private void inicializarColumnaEdicion () {
         columnaEditar.setCellFactory(columna -> new TableCell<>() {
-
         private final Button botonEditar = new Button("Editar");
-
         {
             botonEditar.setOnAction(event -> {
                 Producto producto =
@@ -80,7 +76,6 @@ public class ProductoControlador {
                 editarProducto(producto);
             });
         }
-
         @Override
         protected void updateItem(Void item, boolean empty) {
             super.updateItem(item, empty);
@@ -126,7 +121,7 @@ public class ProductoControlador {
                 getClass().getResource("/com/gestion/view/ProductoEditar.fxml")
             );
             Parent root = loader.load();
-            ProductoEditarControlador controlador =
+            ProductoFormularioControlador controlador =
                 loader.getController();
             controlador.cargarProductoCampoTexto(producto);
             Stage ventana = new Stage();

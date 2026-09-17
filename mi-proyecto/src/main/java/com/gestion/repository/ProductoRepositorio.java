@@ -30,7 +30,7 @@ public class ProductoRepositorio {
         + "codigo_barras TEXT UNIQUE, "
         + "nombre_producto TEXT NOT NULL, "
         + "marca TEXT NOT NULL, "
-        + "cantidad_producto REAL, "
+        + "cantidad_producto REAL NOT NULL, "
         + "unidad_medida TEXT, "
         + "unidad_agrupada INTEGER, "
         + "precio_venta REAL NOT NULL, "
@@ -98,7 +98,7 @@ public class ProductoRepositorio {
             sentenciaPreparada.setString(1, producto.conseguirCodigoBarras()); // Empieza en 1
             sentenciaPreparada.setString(2, producto.conseguirNombre());
             sentenciaPreparada.setString(3, producto.conseguirMarca());
-            sentenciaPreparada.setDouble(4, producto.conseguirCantidadProducto());
+            sentenciaPreparada.setObject(4, producto.conseguirCantidadProducto());
             sentenciaPreparada.setString(5, producto.conseguirUnidadMedida());
             sentenciaPreparada.setObject(6, producto.conseguirUnidadAgrupada());
             sentenciaPreparada.setDouble(7, producto.conseguirPrecio());

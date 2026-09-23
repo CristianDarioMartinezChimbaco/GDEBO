@@ -128,199 +128,6 @@ public class ProductoFormularioControlador {
         }
     }
 
-    @FXML
-    private void aceptar() {
-            // Validacion Codigo de barras
-        if (txtCodigoBarras.getText() == null || txtCodigoBarras.getText().isBlank()) {
-            if (!
-                mostrarAlertaAdvertencia("Alerta",
-                    "Codigo de barras vacio", 
-                    "¿Esta seguro de esta accion?"
-                )
-            ) {
-                return;
-            } else {
-                producto.colocarCodigoBarras(null);
-            }
-        } else {
-            producto.colocarCodigoBarras(txtCodigoBarras.getText().trim());
-        }
-            // Validacion Nobre de producto
-        if (txtNombreProducto.getText() == null || txtNombreProducto.getText().isBlank()) {
-            new Alert(
-                AlertType.ERROR,
-                "Nombre de producto vacio, por favor corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-        producto.colocarNombre(txtNombreProducto.getText().trim());
-            // Validacion Marca
-        if (txtMarca.getText().isBlank()) {
-            new Alert(
-                AlertType.ERROR,
-                "Marca o distribuidor vacia, por favor corrijala para continuar"
-            ).showAndWait();
-            return;
-        }
-        producto.colocarMarca(txtMarca.getText().trim());
-            // Validacion Cantidad de producto
-        if (txtCantidadProducto.getText() == null || txtCantidadProducto.getText().isBlank()) {
-             new Alert(
-                    AlertType.ERROR,
-                    "Cantidad producto vacio, por favor indique \"0\" o corríjala para continuar"
-            ).showAndWait();
-            return;
-        }
-        try {
-            if (Double.parseDouble(txtCantidadProducto.getText().trim()) < 0) {
-                new Alert(
-                    AlertType.ERROR,
-                    "Cantidad producto es inferior a 0, por favor corríjala para continuar"
-                ).showAndWait();
-                return;
-            }
-            producto.colocarCantidadProducto(
-                Double.parseDouble(txtCantidadProducto.getText().trim())
-            );
-        } catch (NumberFormatException e) {
-            new Alert(
-                AlertType.ERROR,
-                "Cantidad producto no es numérica, por favor corríjala para continuar"
-            ).showAndWait();
-            return;
-        }
-        if (unidadMedida.isSelected() 
-            && txtUnidadMedida.getValue() != null 
-            && txtUnidadMedida.getValue().equals(UnidadesMedida.UNIDAD)
-        ) {
-            double numero =  Double.parseDouble(txtCantidadProducto.getText().trim());
-            if (!(numero % 1 == 0)) {
-                 new Alert(
-                    AlertType.ERROR,
-                    "Campo \"Unidad\" seleccionado pero Cantidad de producto no es un entero, por favor corríjala para continuar"
-                ).showAndWait();
-                return;
-            }
-        }
-            // Validacion Unidad medida
-        if (unidadMedida.isSelected()) {
-            if (txtUnidadMedida.getValue() == null || txtUnidadMedida.getValue().isBlank()) {
-                txtUnidadMedida.getEditor().clear();
-                new Alert(
-                    AlertType.ERROR,
-                    "Debe seleccionar una unidad de medida valida."
-                ).showAndWait();
-                return;
-            }
-            producto.colocarUnidadMedida(txtUnidadMedida.getValue());
-            producto.colocarUnidadAgrupada(null);
-        } else if (unidadAgrupada.isSelected()) {
-            if (txtUnidadAgrupada.getSelectionModel().getSelectedItem() == null) {
-                txtUnidadAgrupada.getEditor().clear();
-                new Alert(
-                    AlertType.ERROR,
-                    "Debe seleccionar un producto padre valido."
-                ).showAndWait();
-                return;
-            }
-            if(productoRepositorio.consultarColumnaUnidadAgrupada()
-                .contains(
-                    String.valueOf(
-                        producto.conseguirId()
-                    )
-                )
-            ) {
-                new Alert(
-                    AlertType.ERROR,
-                    "Este producto cuenta con unidades hijas, no puede ser una unidad agrupada."
-                ).showAndWait();
-                return;
-            }
-            producto.colocarUnidadMedida(null);
-            producto.colocarUnidadAgrupada(
-                productoCadenaId(
-                    txtUnidadAgrupada.getSelectionModel().getSelectedItem()
-                )
-            );
-        }
-            // validacion Precio
-        if (txtPrecio.getText() == null || txtPrecio.getText().isBlank()) {
-            new Alert(
-                AlertType.ERROR,
-                "Precio vacio, por favor corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-        try {
-            producto.colocarPrecio(Double.parseDouble(txtPrecio.getText().trim()));
-        } catch (NumberFormatException e) {
-            new Alert(
-                AlertType.ERROR,
-                "Precio no es numerico, por favor corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-            // Validacion Exixtencias
-        if (txtExistencias.getText() == null || txtExistencias.getText().isBlank()) {
-            new Alert(
-                AlertType.ERROR,
-                "Existencias vacias, por favor corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-        try {
-            producto.colocarExistencias(Double.parseDouble(txtExistencias.getText().trim()));
-        } catch (NumberFormatException e) {
-            new Alert(
-                AlertType.ERROR,
-                "Existencias no es un numerico, por favor indique \"0\" o corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-            // Validacion Minimo de existencias
-        if (txtMinimoExistencias.getText() == null || txtMinimoExistencias.getText().isBlank()) {
-            new Alert(
-                AlertType.ERROR,
-                "Minimo existencias esta vacio, por favor indique \"0\" o corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-        try {
-            producto.colocarMinimoExistencias(Double.parseDouble(txtMinimoExistencias.getText().trim()));
-        } catch (NumberFormatException e) {
-            new Alert(
-                AlertType.ERROR,
-                "Existencias no es un numerico, por favor indique \"0\" o corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-        System.out.println(producto.toString());
-            // Guardar o editar
-        try {
-            if (producto.conseguirId() == null) {
-                productoRepositorio.agregarProducto(producto);
-                new Alert(
-                    AlertType.INFORMATION,
-                    "Producto guardado correctamente"
-                ).showAndWait();
-            } else {
-                productoRepositorio.editarProducto(producto);
-                new Alert(
-                    AlertType.INFORMATION,
-                    "Producto editado correctamente"
-                ).showAndWait();
-            }
-        } catch (RuntimeException e) {
-            System.out.print("ERROR: " + e);
-            new Alert(
-                AlertType.ERROR,
-                "No se pudo guardar el producto: " + e.getMessage()
-            ).showAndWait();
-            return;
-        }
-        cerrarVentana();
-    }
-
     private boolean mostrarAlertaAdvertencia(String titulo, String cabecera, String cuerpo) {
         boolean bandera = false;
         Alert alerta = new Alert(AlertType.CONFIRMATION);
@@ -368,4 +175,225 @@ public class ProductoFormularioControlador {
         }
     }
 
+    @FXML
+    private void aceptar() {
+///////////// Validacion Codigo de barras //////////////////////////////////////////////////////////
+        if (txtCodigoBarras.getText() == null || txtCodigoBarras.getText().isBlank()) {
+            if (!
+                mostrarAlertaAdvertencia("Alerta",
+                    "Codigo de barras vacio", 
+                    "¿Esta seguro de esta accion?"
+                )
+            ) {
+                return;
+            } else {
+                producto.colocarCodigoBarras(null);
+            }
+        } else {
+            producto.colocarCodigoBarras(txtCodigoBarras.getText().trim());
+        }
+///////////// Validacion Nobre de producto //////////////////////////////////////////////////////////
+        if (txtNombreProducto.getText() == null || txtNombreProducto.getText().isBlank()) {
+            new Alert(
+                AlertType.ERROR,
+                "Nombre de producto vacio, por favor corrijalo para continuar"
+            ).showAndWait();
+            return;
+        }
+        producto.colocarNombre(txtNombreProducto.getText().trim());
+///////////// Validacion Marca //////////////////////////////////////////////////////////
+        if (txtMarca.getText().isBlank()) {
+            new Alert(
+                AlertType.ERROR,
+                "Marca o distribuidor vacia, por favor corrijala para continuar"
+            ).showAndWait();
+            return;
+        }
+        producto.colocarMarca(txtMarca.getText().trim());
+///////////// Validacion Cantidad de producto //////////////////////////////////////////////////////////
+        if (txtCantidadProducto.getText() == null || txtCantidadProducto.getText().isBlank()) {
+             new Alert(
+                    AlertType.ERROR,
+                    "Cantidad producto vacio, por favor indique \"0\" o corríjala para continuar"
+            ).showAndWait();
+            return;
+        }
+        try {
+            if (Double.parseDouble(txtCantidadProducto.getText().trim()) <= 0) {
+                new Alert(
+                    AlertType.ERROR,
+                    "Cantidad producto es inferior o igual a 0, por favor corríjala para continuar"
+                ).showAndWait();
+                return;
+            }
+            producto.colocarCantidadProducto(
+                Double.parseDouble(txtCantidadProducto.getText().trim())
+            );
+        } catch (NumberFormatException e) {
+            new Alert(
+                AlertType.ERROR,
+                "Cantidad producto no es numérica, por favor corríjala para continuar"
+            ).showAndWait();
+            return;
+        }
+        if (unidadMedida.isSelected() 
+            && txtUnidadMedida.getValue() != null 
+            && txtUnidadMedida.getValue().equals(UnidadesMedida.UNIDAD)
+        ) {
+            double numero =  Double.parseDouble(txtCantidadProducto.getText().trim());
+            if (!(numero % 1 == 0)) {
+                 new Alert(
+                    AlertType.ERROR,
+                    "Campo \"Unidad\" seleccionado pero Cantidad de producto no es un entero, por favor corríjala para continuar"
+                ).showAndWait();
+                return;
+            }
+        }
+///////////// Validacion Unidad medida //////////////////////////////////////////////////////////
+        if (unidadMedida.isSelected()) {
+            if (txtUnidadMedida.getSelectionModel().getSelectedItem() == null ||
+                !UNIDADES_ORIGINALES.contains(
+                    txtUnidadMedida.getSelectionModel().getSelectedItem()
+                )
+            ) {
+                txtUnidadMedida.getEditor().clear();
+                new Alert(
+                    AlertType.ERROR,
+                    "Debe seleccionar una unidad de medida válida."
+                ).showAndWait();
+                return;
+            }
+            producto.colocarUnidadMedida(
+                txtUnidadMedida.getSelectionModel().getSelectedItem()
+            );
+            producto.colocarUnidadAgrupada(null);
+        } else if (unidadAgrupada.isSelected()) {
+            if (txtUnidadAgrupada.getSelectionModel().getSelectedItem() == null ||
+                !productosACadena().contains(
+                    txtUnidadAgrupada.getSelectionModel().getSelectedItem()
+                )
+            ) {
+                txtUnidadAgrupada.getEditor().clear();
+                new Alert(
+                    AlertType.ERROR,
+                    "Debe seleccionar un producto padre válido."
+                ).showAndWait();
+                return;
+            }
+            if (productoRepositorio.consultarColumnaUnidadAgrupada()
+                .contains(
+                    String.valueOf(producto.conseguirId())
+                )
+            ) {
+                new Alert(
+                    AlertType.ERROR,
+                    "Este producto cuenta con unidades hijas, no puede ser una unidad agrupada."
+                ).showAndWait();
+                return;
+            }
+            producto.colocarUnidadMedida(null);
+            producto.colocarUnidadAgrupada(
+                productoCadenaId(
+                    txtUnidadAgrupada.getSelectionModel().getSelectedItem()
+                )
+            );
+        }
+///////////// validacion Precio //////////////////////////////////////////////////////////
+        if (txtPrecio.getText() == null || txtPrecio.getText().isBlank()) {
+            new Alert(
+                AlertType.ERROR,
+                "Precio vacio, por favor corrijalo para continuar"
+            ).showAndWait();
+            return;
+        }
+        try {
+            if (Double.parseDouble(txtPrecio.getText().trim()) <= 0 ) {
+                new Alert(
+                    AlertType.ERROR,
+                    "Precio es inferior o igual a 0, por favor corrijalo para continuar"
+                ).showAndWait();
+                return;
+            }
+            producto.colocarPrecio(Double.parseDouble(txtPrecio.getText().trim()));
+        } catch (NumberFormatException e) {
+            new Alert(
+                AlertType.ERROR,
+                "Precio no es numerico, por favor corrijalo para continuar"
+            ).showAndWait();
+            return;
+        }
+///////////// Validacion Exixtencias //////////////////////////////////////////////////////////
+        if (txtExistencias.getText() == null || txtExistencias.getText().isBlank()) {
+            new Alert(
+                AlertType.ERROR,
+                "Existencias vacias, por favor corrijalo para continuar"
+            ).showAndWait();
+            return;
+        }
+        try {
+            if (Double.parseDouble(txtExistencias.getText().trim()) < 0 ) {
+                new Alert(
+                    AlertType.ERROR,
+                    "Existencias es inferior a 0, por favor corrijalo para continuar"
+                ).showAndWait();
+                return;
+            }
+            producto.colocarExistencias(Double.parseDouble(txtExistencias.getText().trim()));
+        } catch (NumberFormatException e) {
+            new Alert(
+                AlertType.ERROR,
+                "Existencias no es un numerico, por favor indique \"0\" o corrijalo para continuar"
+            ).showAndWait();
+            return;
+        }
+///////////// Validacion Minimo de existencias //////////////////////////////////////////////////////////
+        if (txtMinimoExistencias.getText() == null || txtMinimoExistencias.getText().isBlank()) {
+            new Alert(
+                AlertType.ERROR,
+                "Minimo existencias esta vacio, por favor indique \"0\" o corrijalo para continuar"
+            ).showAndWait();
+            return;
+        }
+        try {
+            if (Double.parseDouble(txtMinimoExistencias.getText().trim()) < 0 ) {
+                new Alert(
+                    AlertType.ERROR,
+                    "Minimo de existencias es inferior a 0, por favor corrijalo para continuar"
+                ).showAndWait();
+                return;
+            }
+            producto.colocarMinimoExistencias(Double.parseDouble(txtMinimoExistencias.getText().trim()));
+        } catch (NumberFormatException e) {
+            new Alert(
+                AlertType.ERROR,
+                "Minimo de existencias no es un numerico, por favor indique \"0\" o corrijalo para continuar"
+            ).showAndWait();
+            return;
+        }
+        System.out.println(producto.toString());
+////////////// Guardar o editar //////////////////////////////////////////////////////////
+        try {
+            if (producto.conseguirId() == null) { // AGREGAR
+                productoRepositorio.agregarProducto(producto);
+                new Alert(
+                    AlertType.INFORMATION,
+                    "Producto guardado correctamente"
+                ).showAndWait();
+            } else { // EDITAR
+                productoRepositorio.editarProducto(producto);
+                new Alert(
+                    AlertType.INFORMATION,
+                    "Producto editado correctamente"
+                ).showAndWait();
+            }
+        } catch (RuntimeException e) {
+            System.out.print("ERROR: " + e);
+            new Alert(
+                AlertType.ERROR,
+                "No se pudo guardar el producto: " + e.getMessage()
+            ).showAndWait();
+            return;
+        }
+        cerrarVentana();
+    }
 }

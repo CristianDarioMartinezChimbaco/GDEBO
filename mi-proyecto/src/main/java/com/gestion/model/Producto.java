@@ -1,13 +1,17 @@
 package com.gestion.model;
 
 public class Producto {
+
+    // Atributos
     private Integer id; 
     private String codigoBarras;
     private String nombre;
     private String marca;
+    private Integer categoria;
     private Double cantidadProducto;
     private String unidadMedida;
     private Integer unidadAgrupada;
+    private String codNomMarUniAgr;
     private Double precio;
     private Double existencias;
     private Double minimoExistencias;
@@ -15,23 +19,26 @@ public class Producto {
 
     // Constructor 
     public Producto() {
-      //Vacio
+      // Vacio
     }
 
     public Producto(
       String codigoBarras,
       String nombre,
       String marca,
+      Integer categoria,
       Double cantidadProducto,
       String unidadMedida,
       Integer unidadAgrupada,
       Double precio,
       Double existencias,
       Double minimoExistencias,
-      Boolean activo) {
+      Boolean activo
+    ) {
         this.codigoBarras = codigoBarras;
         this.nombre = nombre;
         this.marca = marca;
+        this.categoria = categoria;
         this.cantidadProducto = cantidadProducto;
         this.unidadMedida = unidadMedida;
         this.unidadAgrupada = unidadAgrupada;
@@ -39,7 +46,7 @@ public class Producto {
         this.existencias = existencias;
         this.minimoExistencias = minimoExistencias;
         this.activo = activo;
-      }
+    }
 
     // Getters
     public Integer conseguirId() {
@@ -58,6 +65,10 @@ public class Producto {
       return marca; 
     }
 
+    public Integer conseguirCategoria() {
+      return categoria; 
+    }
+
     public Double conseguirCantidadProducto() {
       return cantidadProducto; 
     }
@@ -68,6 +79,10 @@ public class Producto {
 
     public Integer conseguirUnidadAgrupada() {
       return unidadAgrupada; 
+    }
+
+    public String conseguirCodNomMarUniAgr(){
+      return  codNomMarUniAgr;
     }
 
     public Double conseguirPrecio() {
@@ -103,6 +118,10 @@ public class Producto {
       this.marca = marca; 
     }
 
+    public void colocarCategoria(Integer categoria) { 
+      this.categoria = categoria; 
+    }
+
     public void colocarCantidadProducto(Double cantidadProducto) { 
       this.cantidadProducto = cantidadProducto; 
     }
@@ -113,6 +132,10 @@ public class Producto {
 
     public void colocarUnidadAgrupada(Integer unidadAgrupada) { 
       this.unidadAgrupada = unidadAgrupada; 
+    }
+
+    public void colocarCodNomMarUniAgr(String codNomMarUniAgr) { 
+      this.codNomMarUniAgr = codNomMarUniAgr; 
     }
 
     public void colocarPrecio(Double precio) { 

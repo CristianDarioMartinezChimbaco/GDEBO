@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.lote.LoteControlador">
+   <children>
+      <GridPane alignment="TOP_CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Lotes" textAlignment="CENTER" GridPane.columnIndex="1">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Button fx:id="botonAgregar" contentDisplay="CENTER" mnemonicParsing="false" onAction="#abrirFormularioAgregar" text="Agregar +" textAlignment="CENTER" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+      <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="TOP_CENTER" spacing="10.0">
+               <children>
+                  <ComboBox editable="true" promptText="Nombre de producto" />
+                  <ComboBox editable="true" promptText="Lote" />
+                  <DatePicker promptText="Fecha de registro" />
+                  <DatePicker promptText="Fecha de vencimiento" />
+               </children>
+            </HBox>
+            <TableView fx:id="tablaLotes">
+               <columns>
+                  <TableColumn fx:id="columnaProducto" text="Producto" />
+                  <TableColumn fx:id="columnaLote" text="Lote" />
+                  <TableColumn fx:id="columnaFechaRegistro" text="Fecha de registro" />
+                  <TableColumn fx:id="columnaFechaVencimiento" text="Fecha de vencimiento" />
+                  <TableColumn fx:id="columnaCantidadEntrada" text="Cantidad entrada" />
+                  <TableColumn fx:id="columnaPrecioCompra" text="Precio de compra" />
+                  <TableColumn fx:id="columnaEditar" text="Editar" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

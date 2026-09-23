@@ -1,4 +1,4 @@
-package com.gestion.controller.producto;
+package com.gestion.controller.lote;
 
 import java.io.IOException;
 
@@ -9,62 +9,26 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ProductoControlador {
+public class LoteControlador {
 
-    private final Button botonEditar = new Button("Editar");
     private final ProductoRepositorio productoRepositorio = new ProductoRepositorio();
     private final ObservableList<Producto> productosObservables = FXCollections.observableArrayList();
-    private FilteredList<String> listaFiltroCodigoBarras = 
-        new FilteredList<>(
-            productoRepositorio.consultarColumnaCodigoBarras()
-        )
-    ;
-    private FilteredList<String> listaFiltroNombre = 
-        new FilteredList<>(
-            productoRepositorio.consultarColumnaNombreProducto()
-        )
-    ;
-    private FilteredList<String> listaFiltroMarca = 
-        new FilteredList<>(
-            productoRepositorio.consultarColumnaMarca()
-        )
-    ;
-    private FilteredList<String> listaFiltroCategoria = 
-        new FilteredList<>(
-            productoRepositorio.consultarColumnaMarca()
-        )
-    ;
-    private final FilteredList<Producto> listaFiltroTabla =
-        new FilteredList<>(
-            productosObservables,
-            p -> true
-        )
-    ;
-
-    @FXML private ComboBox<String> filtroCodigoBarras;
-    @FXML private ComboBox<String> filtroNombre;
-    @FXML private ComboBox<String> filtroMarca;
-    @FXML private ComboBox<String> filtroCategoria;
-
     @FXML private TableView<Producto> tablaProductos;
     @FXML private TableColumn<Producto, String> columnaCodigo;
     @FXML private TableColumn<Producto, String> columnaNombre;
     @FXML private TableColumn<Producto, String> columnaMarca;
-    @FXML private TableColumn<Producto, Integer> columnaCategoria;
     @FXML private TableColumn<Producto, Double> columnaCantidad;
     @FXML private TableColumn<Producto, String> columnaUnidadMedida;
     @FXML private TableColumn<Producto, Integer> columnaUnidadAgrupada;
@@ -75,26 +39,10 @@ public class ProductoControlador {
 
     @FXML
     public void initialize() {
-        cargarListaFiltros();
         inicializarProductosTablaVista();
         inicializarColumnaEdicion();
-        tablaProductos.setItems(listaFiltroTabla);
+        tablaProductos.setItems(productosObservables);
         cargarProductos();
-    }
-
-    private void cargarListaFiltros(){
-        configurarFiltro(
-            filtroCodigoBarras,
-            listaFiltroCodigoBarras
-        );
-        configurarFiltro(
-            filtroNombre,
-            listaFiltroNombre
-        );
-        configurarFiltro(
-            filtroMarca,
-            listaFiltroMarca
-        );
     }
 
     private void inicializarProductosTablaVista() {
@@ -104,8 +52,6 @@ public class ProductoControlador {
             celda -> new SimpleStringProperty(celda.getValue().conseguirNombre()));
         columnaMarca.setCellValueFactory(
             celda -> new SimpleStringProperty(celda.getValue().conseguirMarca()));
-        //Categoria
-    
         columnaCantidad.setCellValueFactory(
             celda -> new SimpleObjectProperty<>(celda.getValue().conseguirCantidadProducto()));
         columnaUnidadMedida.setCellValueFactory(
@@ -122,6 +68,7 @@ public class ProductoControlador {
 
     private void inicializarColumnaEdicion () {
         columnaEditar.setCellFactory(columna -> new TableCell<>() {
+        private final Button botonEditar = new Button("Editar");
         {
             botonEditar.setOnAction(event -> {
                 Producto producto =
@@ -132,6 +79,7 @@ public class ProductoControlador {
         @Override
         protected void updateItem(Void item, boolean empty) {
             super.updateItem(item, empty);
+
             if (empty) {
                 setGraphic(null);
             } else {
@@ -149,7 +97,7 @@ public class ProductoControlador {
     private void abrirFormularioAgregar() {
         try {
             FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/gestion/view/producto/ProductoAgregar.fxml"));
+                getClass().getResource("/com/gestion/view/ProductoAgregar.fxml"));
             Parent root = loader.load();
             Stage ventana = new Stage();
             ventana.setTitle("Agregar producto");
@@ -170,10 +118,10 @@ public class ProductoControlador {
     private void editarProducto(Producto producto) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/gestion/view/producto/ProductoEditar.fxml")
+                getClass().getResource("/com/gestion/view/ProductoEditar.fxml")
             );
             Parent root = loader.load();
-            ProductoFormularioControlador controlador =
+            LoteFormularioControlador controlador =
                 loader.getController();
             controlador.cargarProductoCampoTexto(producto);
             Stage ventana = new Stage();
@@ -189,49 +137,5 @@ public class ProductoControlador {
                 "No se pudo abrir el formulario de edición."
             ).showAndWait();
         }
-    }
-
-    private void aplicarFiltros() {
-        String codigo = filtroCodigoBarras.getEditor()
-            .getText()
-            .trim()
-            .toLowerCase()
-        ;
-        String nombre = filtroNombre.getEditor()
-            .getText()
-            .trim()
-            .toLowerCase()
-        ;
-        listaFiltroTabla.setPredicate(producto -> {
-            boolean coincideCodigo =
-                codigo.isEmpty()
-                || producto.conseguirCodigoBarras()
-                    .toLowerCase()
-                    .contains(codigo)
-            ;
-            boolean coincideNombre =
-                nombre.isEmpty()
-                || producto.conseguirNombre()
-                    .toLowerCase()
-                    .contains(nombre)
-            ;
-            return coincideCodigo && coincideNombre;
-        });
-    }
-
-    private void configurarFiltro(ComboBox<String> comboBox, FilteredList<String> lista) {
-
-        comboBox.setItems(lista);
-
-        comboBox.getEditor().textProperty().addListener(
-            (obs, old, nuevo) -> {
-                lista.setPredicate(s ->
-                    nuevo == null
-                    || nuevo.isEmpty()
-                    || s.toLowerCase().contains(nuevo.toLowerCase())
-                );
-                aplicarFiltros();
-            }
-        );
     }
 }

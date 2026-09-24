@@ -3,6 +3,7 @@ package com.gestion.controller.producto;
 import java.io.IOException;
 
 import com.gestion.model.Producto;
+import com.gestion.repository.CategoriaRepositorio;
 import com.gestion.repository.ProductoRepositorio;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -26,6 +27,7 @@ import javafx.stage.Stage;
 public class ProductoControlador {
 
     private final Button botonEditar = new Button("Editar");
+    private final CategoriaRepositorio categoriaRepositorio = new CategoriaRepositorio();
     private final ProductoRepositorio productoRepositorio = new ProductoRepositorio();
     private final ObservableList<Producto> productosObservables = FXCollections.observableArrayList();
     private FilteredList<String> listaFiltroCodigoBarras = 
@@ -43,9 +45,9 @@ public class ProductoControlador {
             productoRepositorio.consultarColumnaMarca()
         )
     ;
-    private FilteredList<String> listaFiltroCategoria = 
+    private FilteredList<String> listaFiltroNombreCategoria = 
         new FilteredList<>(
-            productoRepositorio.consultarColumnaMarca()
+            categoriaRepositorio.consultarColumnaNombreCategoria()
         )
     ;
     private final FilteredList<Producto> listaFiltroTabla =
@@ -58,7 +60,7 @@ public class ProductoControlador {
     @FXML private ComboBox<String> filtroCodigoBarras;
     @FXML private ComboBox<String> filtroNombre;
     @FXML private ComboBox<String> filtroMarca;
-    @FXML private ComboBox<String> filtroCategoria;
+    @FXML private ComboBox<String> filtroNombreCategoria;
 
     @FXML private TableView<Producto> tablaProductos;
     @FXML private TableColumn<Producto, String> columnaCodigo;
@@ -67,7 +69,7 @@ public class ProductoControlador {
     @FXML private TableColumn<Producto, Integer> columnaCategoria;
     @FXML private TableColumn<Producto, Double> columnaCantidad;
     @FXML private TableColumn<Producto, String> columnaUnidadMedida;
-    @FXML private TableColumn<Producto, Integer> columnaUnidadAgrupada;
+    @FXML private TableColumn<Producto, String> columnaProductoPadre;
     @FXML private TableColumn<Producto, Double> columnaPrecio;
     @FXML private TableColumn<Producto, Double> columnaExistencias;
     @FXML private TableColumn<Producto, Double> columnaMinimoExistencias;
@@ -110,8 +112,8 @@ public class ProductoControlador {
             celda -> new SimpleObjectProperty<>(celda.getValue().conseguirCantidadProducto()));
         columnaUnidadMedida.setCellValueFactory(
             celda -> new SimpleStringProperty(celda.getValue().conseguirUnidadMedida()));
-        columnaUnidadAgrupada.setCellValueFactory(
-            celda -> new SimpleObjectProperty<>(celda.getValue().conseguirUnidadAgrupada()));
+        columnaProductoPadre.setCellValueFactory(
+            celda -> new SimpleStringProperty(celda.getValue().conseguirProductoPadre()));
         columnaPrecio.setCellValueFactory(
             celda -> new SimpleObjectProperty<>(celda.getValue().conseguirPrecio()));
         columnaExistencias.setCellValueFactory(
@@ -167,6 +169,11 @@ public class ProductoControlador {
         }
     }
 
+    @FXML 
+    private void irACategorias(){
+
+    }
+
     private void editarProducto(Producto producto) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -202,6 +209,16 @@ public class ProductoControlador {
             .trim()
             .toLowerCase()
         ;
+        String marca = filtroMarca.getEditor()
+            .getText()
+            .trim()
+            .toLowerCase()
+        ;
+        String nombreCategoria = filtroMarca.getEditor()
+            .getText()
+            .trim()
+            .toLowerCase()
+        ;
         listaFiltroTabla.setPredicate(producto -> {
             boolean coincideCodigo =
                 codigo.isEmpty()
@@ -215,14 +232,28 @@ public class ProductoControlador {
                     .toLowerCase()
                     .contains(nombre)
             ;
-            return coincideCodigo && coincideNombre;
+            boolean coincideMarca =
+                marca.isEmpty()
+                || producto.conseguirMarca()
+                    .toLowerCase()
+                    .contains(marca)
+            ;
+            boolean coincideCategoria =
+                nombreCategoria.isEmpty()
+                || producto.conseguirMarca()
+                    .toLowerCase()
+                    .contains(nombreCategoria)
+            ;
+            return coincideCodigo 
+                && coincideNombre 
+                && coincideMarca 
+                && coincideCategoria
+            ;
         });
     }
 
     private void configurarFiltro(ComboBox<String> comboBox, FilteredList<String> lista) {
-
         comboBox.setItems(lista);
-
         comboBox.getEditor().textProperty().addListener(
             (obs, old, nuevo) -> {
                 lista.setPredicate(s ->

@@ -8,10 +8,11 @@ public class Producto {
     private String nombre;
     private String marca;
     private Integer categoria;
+    private String nombreCategoria;
     private Double cantidadProducto;
     private String unidadMedida;
     private Integer unidadAgrupada;
-    private String codNomMarUniAgr;
+    private String productoPadre;
     private Double precio;
     private Double existencias;
     private Double minimoExistencias;
@@ -69,6 +70,10 @@ public class Producto {
       return categoria; 
     }
 
+    public String conseguirNombreCategoria() {
+      return nombreCategoria;
+    }
+
     public Double conseguirCantidadProducto() {
       return cantidadProducto; 
     }
@@ -81,8 +86,8 @@ public class Producto {
       return unidadAgrupada; 
     }
 
-    public String conseguirCodNomMarUniAgr(){
-      return  codNomMarUniAgr;
+    public String conseguirProductoPadre(){
+      return  productoPadre;
     }
 
     public Double conseguirPrecio() {
@@ -114,12 +119,16 @@ public class Producto {
       this.nombre = nombre; 
     }
 
-    public void colocarMarca(String marca) { 
-      this.marca = marca; 
+    public void colocarNombreCategoria(String nombreCategoria) { 
+      this.nombreCategoria = nombreCategoria; 
     }
 
     public void colocarCategoria(Integer categoria) { 
       this.categoria = categoria; 
+    }
+
+    public void colocarMarca(String marca) { 
+      this.marca = marca; 
     }
 
     public void colocarCantidadProducto(Double cantidadProducto) { 
@@ -134,8 +143,8 @@ public class Producto {
       this.unidadAgrupada = unidadAgrupada; 
     }
 
-    public void colocarCodNomMarUniAgr(String codNomMarUniAgr) { 
-      this.codNomMarUniAgr = codNomMarUniAgr; 
+    public void colocarProductoPadre(String productoPadre) { 
+      this.productoPadre = productoPadre; 
     }
 
     public void colocarPrecio(Double precio) { 

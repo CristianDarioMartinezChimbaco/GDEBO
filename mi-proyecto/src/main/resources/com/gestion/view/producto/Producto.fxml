@@ -41,7 +41,7 @@
                   <ComboBox fx:id="filtroCodigoBarras" editable="true" promptText="Codigo de barras" />
                   <ComboBox fx:id="filtroNombre" editable="true" promptText="Nombre de producto" />
                   <ComboBox fx:id="filtroMarca" editable="true" promptText="Marca/Distribuidor" />
-                  <ComboBox fx:id="filtroCategoria" editable="true" promptText="Categoria" />
+                  <ComboBox fx:id="filtroNombreCategoria" editable="true" promptText="Categoria" />
                </children>
             </HBox>
             <TableView fx:id="tablaProductos">
@@ -52,7 +52,7 @@
                   <TableColumn fx:id="columnaCategoria" prefWidth="75.0" text="Categoria" />
                   <TableColumn fx:id="columnaCantidad" text="Cantidad" />
                   <TableColumn fx:id="columnaUnidadMedida" text="Unidad medida" />
-                  <TableColumn fx:id="columnaUnidadAgrupada" text="Unidad agrupada" />
+                  <TableColumn fx:id="columnaProductoPadre" text="Unidad agrupada" />
                   <TableColumn fx:id="columnaPrecio" text="Precio" />
                   <TableColumn fx:id="columnaExistencias" text="Existencias" />
                   <TableColumn fx:id="columnaMinimoExistencias" text="Min existencias" />

@@ -60,29 +60,55 @@ public class ProductoRepositorio {
     ;
 
     // Read
-    private static final String CONSULTA_TODO = "SELECT " 
-        + "id, codigo_barras, nombre_producto, marca, id_categoria, cantidad_producto, "
-        + "unidad_medida, unidad_agrupada, precio_venta, existencias, "
-        + "minimo_existencias FROM producto WHERE activo = 1;";
-
-
-/*
-SELECT
-    p.*,
-    agrupado.codigo_barras || ' - ' ||
-    agrupado.nombre_producto || ' - ' ||
-    agrupado.marca 
-    AS codigo_nombre_marca_unidad_agrupada
-FROM producto p
-LEFT JOIN producto agrupado
-    ON p.unidad_agrupada = agrupado.id
-WHERE p.activo = 1;
-*/
+    private static final String CONSULTA_TODO = "SELECT "
+        + "p.id, "
+        + "p.codigo_barras, "
+        + "p.nombre_producto, "
+        + "p.marca, "
+        + "p.id_categoria, "
+        + "c.nombre_categoria AS categoria, "
+        + "p.cantidad_producto, "
+        + "p.unidad_medida, "
+        + "p.unidad_agrupada, "
+        + "p.precio_venta, "
+        + "p.existencias, "
+        + "p.minimo_existencias, "
+        + "agrupado.codigo_barras || ' - ' || "
+        + "agrupado.nombre_producto || ' - ' || "
+        + "agrupado.marca "
+        + "AS producto_padre "
+        + "FROM producto p "
+        + "LEFT JOIN producto agrupado "
+        + "ON p.unidad_agrupada = agrupado.id "
+        + "LEFT JOIN categoria c "
+        + "ON p.id_categoria = c.id "
+        + "WHERE p.activo = 1;"
+    ;
     
-    private static final String CONSULTA_PRODUCTO = "SELECT " 
-        + "id, codigo_barras, nombre_producto, marca, id_categoria, cantidad_producto, "
-        + "unidad_medida, unidad_agrupada, precio_venta, existencias, "
-        + "minimo_existencias FROM producto WHERE activo = 1 AND id = ?;";
+    private static final String CONSULTA_PRODUCTO = "SELECT "
+        + "p.id, "
+        + "p.codigo_barras, "
+        + "p.nombre_producto, "
+        + "p.marca, "
+        + "p.id_categoria, "
+        + "c.nombre_categoria AS categoria, "
+        + "p.cantidad_producto, "
+        + "p.unidad_medida, "
+        + "p.unidad_agrupada, "
+        + "p.precio_venta, "
+        + "p.existencias, "
+        + "p.minimo_existencias, "
+        + "agrupado.codigo_barras || ' - ' || "
+        + "agrupado.nombre_producto || ' - ' || "
+        + "agrupado.marca "
+        + "AS producto_padre "
+        + "FROM producto p "
+        + "LEFT JOIN producto agrupado "
+        + "ON p.unidad_agrupada = agrupado.id "
+        + "LEFT JOIN categoria c "
+        + "ON p.id_categoria = c.id "
+        + "WHERE p.activo = 1 AND p.id = ?;"
+    ;
 
     // Update
     private static final String CONSULTA_ACTUALIZAR = "UPDATE producto " 
@@ -251,9 +277,13 @@ WHERE p.activo = 1;
         producto.colocarNombre(conjuntoResultados.getString("nombre_producto"));
         producto.colocarMarca(conjuntoResultados.getString("marca"));
         producto.colocarCategoria(conjuntoResultados.getInt("id_categoria"));
+        producto.colocarNombreCategoria(conjuntoResultados.getString("categoria"));
         producto.colocarCantidadProducto(conjuntoResultados.getDouble("cantidad_producto"));
         producto.colocarUnidadMedida(conjuntoResultados.getString("unidad_medida"));
         producto.colocarUnidadAgrupada((Integer) conjuntoResultados.getObject("unidad_agrupada"));
+        producto.colocarProductoPadre(
+            conjuntoResultados.getString("producto_padre")
+        );
         producto.colocarPrecio(conjuntoResultados.getDouble("precio_venta"));
         producto.colocarExistencias(conjuntoResultados.getDouble("existencias"));
         producto.colocarMinimoExistencias(conjuntoResultados.getDouble("minimo_existencias"));

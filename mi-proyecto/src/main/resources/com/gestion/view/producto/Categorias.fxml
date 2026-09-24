@@ -8,20 +8,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.categoria.CategoriaControlador">
    <children>
       <Label text="Lista de catgorias" textAlignment="CENTER" />
       <TableView prefHeight="200.0" prefWidth="200.0">
         <columns>
-          <TableColumn text="#" />
-          <TableColumn text="Categoria" />
+          <TableColumn fx:id="columnaId" text="#" />
+          <TableColumn fx:id="columnaCategoria" text="Categoria" />
         </columns>
       </TableView>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
          <children>
-            <Button mnemonicParsing="false" text="Aceptar" />
-            <Button mnemonicParsing="false" text="Cancelar" />
+            <Button fx:id="botonAceptar" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" />
+            <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
          </children>
       </HBox>
    </children>

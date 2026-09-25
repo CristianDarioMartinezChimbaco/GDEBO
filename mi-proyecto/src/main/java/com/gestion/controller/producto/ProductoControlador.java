@@ -25,8 +25,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ProductoControlador {
-
-    
     private final CategoriaRepositorio categoriaRepositorio = new CategoriaRepositorio();
     private final ProductoRepositorio productoRepositorio = new ProductoRepositorio();
     private final ObservableList<Producto> productosObservables = FXCollections.observableArrayList();

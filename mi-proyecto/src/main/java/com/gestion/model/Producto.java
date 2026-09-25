@@ -7,8 +7,9 @@ public class Producto {
     private String codigoBarras;
     private String nombre;
     private String marca;
-    private Integer categoria;
-    private String nombreCategoria;
+    private Categoria categoria = new Categoria();
+    //private Integer idCategoria;
+    //private String nombreCategoria;
     private Double cantidadProducto;
     private String unidadMedida;
     private Integer unidadAgrupada;
@@ -27,7 +28,7 @@ public class Producto {
       String codigoBarras,
       String nombre,
       String marca,
-      Integer categoria,
+      //Integer categoria,
       Double cantidadProducto,
       String unidadMedida,
       Integer unidadAgrupada,
@@ -39,7 +40,7 @@ public class Producto {
         this.codigoBarras = codigoBarras;
         this.nombre = nombre;
         this.marca = marca;
-        this.categoria = categoria;
+        //this.categoria = categoria;
         this.cantidadProducto = cantidadProducto;
         this.unidadMedida = unidadMedida;
         this.unidadAgrupada = unidadAgrupada;
@@ -66,12 +67,8 @@ public class Producto {
       return marca; 
     }
 
-    public Integer conseguirCategoria() {
+    public Categoria conseguirCategoria() {
       return categoria; 
-    }
-
-    public String conseguirNombreCategoria() {
-      return nombreCategoria;
     }
 
     public Double conseguirCantidadProducto() {
@@ -119,16 +116,12 @@ public class Producto {
       this.nombre = nombre; 
     }
 
-    public void colocarNombreCategoria(String nombreCategoria) { 
-      this.nombreCategoria = nombreCategoria; 
-    }
-
-    public void colocarCategoria(Integer categoria) { 
-      this.categoria = categoria; 
-    }
-
     public void colocarMarca(String marca) { 
       this.marca = marca; 
+    }
+
+    public void colocarCategoria(Categoria categoria) { 
+      this.categoria = categoria; 
     }
 
     public void colocarCantidadProducto(Double cantidadProducto) { 

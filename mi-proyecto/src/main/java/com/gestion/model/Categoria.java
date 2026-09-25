@@ -19,24 +19,30 @@ public class Categoria {
         return id;
     }
 
-    public void colocarId(Integer id) {
-        this.id = id;
-    }
-
     public String conseguirNombre() {
         return nombre;
-    }
-
-    public void colocarNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Integer conseguirActivo() {
         return activo;
     }
 
+    public void colocarId(Integer id) {
+        this.id = id;
+    }
+
+    public void colocarNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public void colocarActivo(Integer activo) {
         this.activo = activo;
     }
 
+      // Metodos
+    @Override
+    public String toString() {
+      return id + " - " + nombre;
+    }
+    
 }

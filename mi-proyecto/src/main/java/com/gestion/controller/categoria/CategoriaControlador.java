@@ -1,11 +1,8 @@
 package com.gestion.controller.categoria;
 
-import java.io.IOException;
 import java.util.Optional;
 
-import com.gestion.controller.producto.ProductoFormularioControlador;
 import com.gestion.model.Categoria;
-import com.gestion.model.Producto;
 import com.gestion.repository.CategoriaRepositorio;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -13,9 +10,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
@@ -25,7 +21,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign.MaterialDesign;
@@ -78,11 +74,14 @@ public class CategoriaControlador {
     private void editarCategoria(Categoria categoria) {
         Alert alerta = new Alert(AlertType.CONFIRMATION);
         alerta.setTitle("Editar Categoria");
-        alerta.setHeaderText("Categoria nueva");
-        alerta.setContentText("Nombre de la nueva categoria:");
+        alerta.setHeaderText("Nombre de la categoria:");
+        alerta.setContentText(null);
         TextField txtNombreCategoria = new TextField();
+        HBox contenedor = new HBox(txtNombreCategoria);
+        contenedor.setPadding(new Insets(15, 5, 5, 5));
+        contenedor.setAlignment(Pos.CENTER);
         txtNombreCategoria.setText(categoria.conseguirNombre());
-        alerta.getDialogPane().setContent(txtNombreCategoria);
+        alerta.getDialogPane().setContent(contenedor);
         ButtonType botonContinuar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
         ButtonType botonCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
         alerta.getButtonTypes().setAll(botonContinuar, botonCancelar);
@@ -117,11 +116,14 @@ public class CategoriaControlador {
     public void agregarCategoria(){
         Alert alerta = new Alert(AlertType.CONFIRMATION);
         alerta.setTitle("Agregar Categoria");
-        alerta.setHeaderText("Categoria nueva");
-        alerta.setContentText("Nombre de la nueva categoria:");
+        alerta.setHeaderText("Nombre de la nuva categoria:");
+        alerta.setContentText(null);
         TextField txtNombreCategoria = new TextField();
+        HBox contenedor = new HBox(txtNombreCategoria);
+        contenedor.setPadding(new Insets(15, 5, 5, 5));
+        contenedor.setAlignment(Pos.CENTER);
         txtNombreCategoria.setPromptText("Nombre");
-        alerta.getDialogPane().setContent(txtNombreCategoria);
+        alerta.getDialogPane().setContent(contenedor);
         ButtonType botonContinuar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
         ButtonType botonCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
         alerta.getButtonTypes().setAll(botonContinuar, botonCancelar);

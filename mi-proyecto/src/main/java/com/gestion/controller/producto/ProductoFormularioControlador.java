@@ -2,7 +2,9 @@ package com.gestion.controller.producto;
 
 import java.util.Optional;
 
+import com.gestion.model.Categoria;
 import com.gestion.model.Producto;
+import com.gestion.repository.CategoriaRepositorio;
 import com.gestion.repository.ProductoRepositorio;
 import com.gestion.service.UnidadesMedida;
 
@@ -15,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -23,25 +26,33 @@ import javafx.stage.Stage;
 
 public class ProductoFormularioControlador {
     private Producto producto = new Producto();
+    private Categoria categoria = new Categoria();
+
     private ProductoRepositorio productoRepositorio = new ProductoRepositorio();
-    private static final ObservableList<String> UNIDADES_ORIGINALES = UnidadesMedida.UNIDADES_ORIGINALES;
+    private CategoriaRepositorio categoriaRepositorio = new CategoriaRepositorio();
+    
     private ObservableList<Producto> unidadesAgrupadas = productoRepositorio.consultarTodo();
-    private FilteredList<String> unidadesFiltradas  = new FilteredList<>(UNIDADES_ORIGINALES);
+    private ObservableList<Categoria> categorias = categoriaRepositorio.consultarTodo();
+    private ObservableList<String> UNIDADES_ORIGINALES = UnidadesMedida.UNIDADES_ORIGINALES;
+
     private FilteredList<String> unidadesFiltradasProdRepo = new FilteredList<>(productosACadena());
+    //private FilteredList<String> categoriasFiltradasCatRepo = new FilteredList<>(categoriasACadena());
+    private FilteredList<String> unidadesFiltradas  = new FilteredList<>(UNIDADES_ORIGINALES);
     @FXML private TextField txtCodigoBarras;
     @FXML private TextField txtNombreProducto;
     @FXML private TextField txtMarca;
+    @FXML private ChoiceBox<Categoria> seleccionCategoria;
     @FXML private TextField txtCantidadProducto;
     @FXML private RadioButton unidadMedida;
     @FXML private RadioButton unidadAgrupada;
     @FXML private ToggleGroup grupoTipoUnidad;
     @FXML private ComboBox<String> txtUnidadMedida;
+    @FXML private ChoiceBox<String> seleccionUnidadMedida;
     @FXML private ComboBox<String> txtUnidadAgrupada;
     @FXML private TextField txtPrecio;
     @FXML private TextField txtExistencias;
     @FXML private TextField txtMinimoExistencias;
     @FXML private Button botonCancelar;
-
 
     // Setters
     public void colocarProducto(Producto producto) {
@@ -51,6 +62,7 @@ public class ProductoFormularioControlador {
     // Metodos
     @FXML
     public void initialize() {
+        seleccionCategoria.setItems(categorias);
         // Ayuda a no ecritura de ComboBox sin selccion del radioButton
         // Configuración inicial
         configurarTipoUnidad();
@@ -59,6 +71,7 @@ public class ProductoFormularioControlador {
             configurarTipoUnidad();
         });
         // ComboBox unidad de medida
+        seleccionUnidadMedida.setItems(UnidadesMedida.UNIDADES_ORIGINALES);
         txtUnidadMedida.setItems(unidadesFiltradas);
         txtUnidadMedida.getEditor().textProperty().addListener((obs, old, nuevo) -> {
             if (nuevo == null || nuevo.isEmpty()) {
@@ -87,8 +100,9 @@ public class ProductoFormularioControlador {
         txtCodigoBarras.setText(producto.conseguirCodigoBarras());
         txtNombreProducto.setText(producto.conseguirNombre());
         txtMarca.setText(producto.conseguirMarca());
+        seleccionCategoria.setValue(producto.conseguirCategoria());
         txtCantidadProducto.setText(String.valueOf(producto.conseguirCantidadProducto()));
-        System.out.println(producto.conseguirUnidadAgrupada() + " <-A & M-> " + producto.conseguirUnidadMedida());
+        //System.out.println(producto.conseguirUnidadAgrupada() + " <-A & M-> " + producto.conseguirUnidadMedida());
         txtUnidadMedida.setValue(producto.conseguirUnidadMedida());
         if (producto.conseguirUnidadAgrupada() == null){
             unidadMedida.setSelected(true);

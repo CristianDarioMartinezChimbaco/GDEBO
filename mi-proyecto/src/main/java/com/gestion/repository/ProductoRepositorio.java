@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.gestion.model.Categoria;
 import com.gestion.model.Producto;
 
 import javafx.collections.FXCollections;
@@ -134,6 +135,41 @@ public class ProductoRepositorio {
     }
 
     // Metodos
+    private Producto convertirProducto(ResultSet conjuntoResultados) throws SQLException {
+        Producto producto = new Producto();
+        producto.colocarId(conjuntoResultados.getInt("id"));
+        producto.colocarCodigoBarras(conjuntoResultados.getString("codigo_barras"));
+        producto.colocarNombre(conjuntoResultados.getString("nombre_producto"));
+        producto.colocarMarca(conjuntoResultados.getString("marca"));
+        Categoria categoria = new Categoria();
+        categoria.colocarId(conjuntoResultados.getInt("id_categoria"));
+        categoria.colocarNombre(conjuntoResultados.getString("categoria"));
+        producto.colocarCategoria(categoria);
+        producto.colocarCantidadProducto(conjuntoResultados.getDouble("cantidad_producto"));
+        producto.colocarUnidadMedida(conjuntoResultados.getString("unidad_medida"));
+        producto.colocarUnidadAgrupada((Integer) conjuntoResultados.getObject("unidad_agrupada"));
+        producto.colocarProductoPadre(
+            conjuntoResultados.getString("producto_padre")
+        );
+        producto.colocarPrecio(conjuntoResultados.getDouble("precio_venta"));
+        producto.colocarExistencias(conjuntoResultados.getDouble("existencias"));
+        producto.colocarMinimoExistencias(conjuntoResultados.getDouble("minimo_existencias"));
+        return producto;
+    }
+
+    private void actualizarTablaProducto(PreparedStatement sentenciaPreparada, Producto producto) throws SQLException {
+        sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
+        sentenciaPreparada.setString(2, producto.conseguirNombre());
+        sentenciaPreparada.setString(3, producto.conseguirMarca());
+        sentenciaPreparada.setInt(4, producto.conseguirCategoria().conseguirId());
+        sentenciaPreparada.setObject(5, producto.conseguirCantidadProducto());
+        sentenciaPreparada.setString(6, producto.conseguirUnidadMedida());
+        sentenciaPreparada.setObject(7, producto.conseguirUnidadAgrupada());
+        sentenciaPreparada.setDouble(8, producto.conseguirPrecio());
+        sentenciaPreparada.setDouble(9, producto.conseguirExistencias());
+        sentenciaPreparada.setDouble(10, producto.conseguirMinimoExistencias());
+        //return sentenciaPreparada;
+    }
     // Create
     private void generarTabla(){
         try (
@@ -150,16 +186,19 @@ public class ProductoRepositorio {
             Connection conexion = ConexionBaseDatos.conectar();
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_INSERTAR)
         ) {      
+            /*
             sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
             sentenciaPreparada.setString(2, producto.conseguirNombre());
             sentenciaPreparada.setString(3, producto.conseguirMarca());
-            sentenciaPreparada.setInt(4, producto.conseguirCategoria());
+            sentenciaPreparada.setInt(4, producto.conseguirCategoria().conseguirId());
             sentenciaPreparada.setObject(5, producto.conseguirCantidadProducto());
             sentenciaPreparada.setString(6, producto.conseguirUnidadMedida());
             sentenciaPreparada.setObject(7, producto.conseguirUnidadAgrupada());
             sentenciaPreparada.setDouble(8, producto.conseguirPrecio());
             sentenciaPreparada.setDouble(9, producto.conseguirExistencias());
             sentenciaPreparada.setDouble(10, producto.conseguirMinimoExistencias());
+            */
+            actualizarTablaProducto(sentenciaPreparada,producto);
             sentenciaPreparada.executeUpdate();
         } catch (SQLException e) {
             System.out.print("ERROR SQL: " + e);
@@ -270,41 +309,26 @@ public class ProductoRepositorio {
         return productos;
     }
 
-    private Producto convertirProducto(ResultSet conjuntoResultados) throws SQLException {
-        Producto producto = new Producto();
-        producto.colocarId(conjuntoResultados.getInt("id"));
-        producto.colocarCodigoBarras(conjuntoResultados.getString("codigo_barras"));
-        producto.colocarNombre(conjuntoResultados.getString("nombre_producto"));
-        producto.colocarMarca(conjuntoResultados.getString("marca"));
-        producto.colocarCategoria(conjuntoResultados.getInt("id_categoria"));
-        producto.colocarNombreCategoria(conjuntoResultados.getString("categoria"));
-        producto.colocarCantidadProducto(conjuntoResultados.getDouble("cantidad_producto"));
-        producto.colocarUnidadMedida(conjuntoResultados.getString("unidad_medida"));
-        producto.colocarUnidadAgrupada((Integer) conjuntoResultados.getObject("unidad_agrupada"));
-        producto.colocarProductoPadre(
-            conjuntoResultados.getString("producto_padre")
-        );
-        producto.colocarPrecio(conjuntoResultados.getDouble("precio_venta"));
-        producto.colocarExistencias(conjuntoResultados.getDouble("existencias"));
-        producto.colocarMinimoExistencias(conjuntoResultados.getDouble("minimo_existencias"));
-        return producto;
-    }
+
     // Update
     public void editarProducto(Producto producto) {
         try (
             Connection conexion = ConexionBaseDatos.conectar();
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_ACTUALIZAR)
         ) {
+            /*
             sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
             sentenciaPreparada.setString(2, producto.conseguirNombre());
             sentenciaPreparada.setString(3, producto.conseguirMarca());
-            sentenciaPreparada.setInt(4, producto.conseguirCategoria());
+            sentenciaPreparada.setInt(4, producto.conseguirCategoria().conseguirId());
             sentenciaPreparada.setDouble(5, producto.conseguirCantidadProducto());
             sentenciaPreparada.setString(6, producto.conseguirUnidadMedida());
             sentenciaPreparada.setObject(7, producto.conseguirUnidadAgrupada());
             sentenciaPreparada.setDouble(8, producto.conseguirPrecio());
             sentenciaPreparada.setDouble(9, producto.conseguirExistencias());
             sentenciaPreparada.setDouble(10, producto.conseguirMinimoExistencias());
+            */
+            actualizarTablaProducto(sentenciaPreparada,producto);
             sentenciaPreparada.setInt(11, producto.conseguirId());  
             sentenciaPreparada.executeUpdate();
         } catch (SQLException e) {

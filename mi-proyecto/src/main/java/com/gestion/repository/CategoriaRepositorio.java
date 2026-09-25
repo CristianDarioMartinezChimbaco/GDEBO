@@ -57,6 +57,7 @@ public class CategoriaRepositorio {
     // Constructor
     public CategoriaRepositorio() {
         generarTabla();
+        crearCategoriaInicial();
     }
 
     // Métodos
@@ -70,9 +71,29 @@ public class CategoriaRepositorio {
             sentencia.execute(CREAR_TABLA);
         } catch (SQLException e) {
             throw new RuntimeException(
-                "No se pudo crear la tabla categoria ",
-                e
+                "No se pudo crear la tabla categoria ", e
             );
+        }
+    }
+
+    private void crearCategoriaInicial(){
+        int estaVacia;
+        try (
+            Connection conexion = ConexionBaseDatos.conectar();
+            Statement sentencia = conexion.createStatement();
+            ResultSet conjuntoResultados = sentencia.executeQuery(
+                "SELECT NOT EXISTS (SELECT 1 FROM categoria) AS esta_vacia"
+            )
+        ) {
+            conjuntoResultados.next();
+            estaVacia = conjuntoResultados.getInt("esta_vacia");
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al consultar categorias ", e);
+        }
+        if (estaVacia == 1){
+            Categoria categoriaInicial = new Categoria();
+            categoriaInicial.colocarNombre("Otros");
+            agregarCategoria(categoriaInicial);
         }
     }
 
@@ -178,15 +199,9 @@ public class CategoriaRepositorio {
 
     private Categoria convertirCategoria(ResultSet conjuntoResultados) throws SQLException {
         Categoria categoria = new Categoria();
-        categoria.colocarId(
-            conjuntoResultados.getInt("id")
-        );
-        categoria.colocarNombre(
-            conjuntoResultados.getString("nombre_categoria")
-        );
-        categoria.colocarActivo(
-            conjuntoResultados.getInt("activo")
-        );
+        categoria.colocarId(conjuntoResultados.getInt("id"));
+        categoria.colocarNombre(conjuntoResultados.getString("nombre_categoria"));
+        categoria.colocarActivo(conjuntoResultados.getInt("activo"));
         return categoria;
     }
 

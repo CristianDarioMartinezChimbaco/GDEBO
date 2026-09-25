@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 
 public class ProductoControlador {
 
-    private final Button botonEditar = new Button("Editar");
+    
     private final CategoriaRepositorio categoriaRepositorio = new CategoriaRepositorio();
     private final ProductoRepositorio productoRepositorio = new ProductoRepositorio();
     private final ObservableList<Producto> productosObservables = FXCollections.observableArrayList();
@@ -56,12 +56,10 @@ public class ProductoControlador {
             p -> true
         )
     ;
-
     @FXML private ComboBox<String> filtroCodigoBarras;
     @FXML private ComboBox<String> filtroNombre;
     @FXML private ComboBox<String> filtroMarca;
     @FXML private ComboBox<String> filtroNombreCategoria;
-
     @FXML private TableView<Producto> tablaProductos;
     @FXML private TableColumn<Producto, String> columnaCodigo;
     @FXML private TableColumn<Producto, String> columnaNombre;
@@ -75,14 +73,7 @@ public class ProductoControlador {
     @FXML private TableColumn<Producto, Double> columnaMinimoExistencias;
     @FXML private TableColumn<Producto, Void> columnaEditar;
 
-    @FXML
-    public void initialize() {
-        cargarListaFiltros();
-        inicializarProductosTablaVista();
-        inicializarColumnaEdicion();
-        tablaProductos.setItems(listaFiltroTabla);
-        cargarProductos();
-    }
+
 
     private void cargarListaFiltros(){
         configurarFiltro(
@@ -122,56 +113,30 @@ public class ProductoControlador {
             celda -> new SimpleObjectProperty<>(celda.getValue().conseguirMinimoExistencias()));
     }
 
-    private void inicializarColumnaEdicion () {
-        columnaEditar.setCellFactory(columna -> new TableCell<>() {
-        {
-            botonEditar.setOnAction(event -> {
-                Producto producto =
-                    getTableView().getItems().get(getIndex());
-                editarProducto(producto);
-            });
-        }
-        @Override
-        protected void updateItem(Void item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty) {
-                setGraphic(null);
-            } else {
-                setGraphic(botonEditar);
-            }
-        }
-    });
-    }
-
     private void cargarProductos() {
         productosObservables.setAll(productoRepositorio.consultarTodo());
     }
 
-    @FXML
-    private void abrirFormularioAgregar() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/gestion/view/producto/ProductoAgregar.fxml"));
-            Parent root = loader.load();
-            Stage ventana = new Stage();
-            ventana.setTitle("Agregar producto");
-            ventana.setScene(new Scene(root));
-            ventana.initModality(Modality.APPLICATION_MODAL);
-            ventana.showAndWait();
-            cargarProductos();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("No se pudo abrir el formulario");
-            alerta.setContentText(e.getMessage());
-            alerta.showAndWait();
-        }
-    }
-
-    @FXML 
-    private void irACategorias(){
-
+    private void inicializarColumnaEdicion () {
+        columnaEditar.setCellFactory(columna -> new TableCell<>() {
+            private final Button botonEditar = new Button("Editar"); // crea un nuevo boton para cada fila
+            {
+                botonEditar.setOnAction(event -> {
+                    //Producto producto = getTableView().getItems().get(getIndex());
+                    Producto producto = getTableRow().getItem();
+                    editarProducto(producto);
+                });
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(botonEditar);
+                }
+            }
+        });
     }
 
     private void editarProducto(Producto producto) {
@@ -264,5 +229,58 @@ public class ProductoControlador {
                 aplicarFiltros();
             }
         );
+    }
+
+    @FXML
+    public void initialize() {
+        cargarListaFiltros();
+        inicializarProductosTablaVista();
+        inicializarColumnaEdicion();
+        tablaProductos.setItems(listaFiltroTabla);
+        cargarProductos();
+    }
+
+    @FXML
+    private void abrirFormularioAgregar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/gestion/view/producto/ProductoAgregar.fxml"));
+            Parent root = loader.load();
+            Stage ventana = new Stage();
+            ventana.setTitle("Agregar producto");
+            ventana.setScene(new Scene(root));
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.showAndWait();
+            cargarProductos();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Error");
+            alerta.setHeaderText("No se pudo abrir el formulario");
+            alerta.setContentText(e.getMessage());
+            alerta.showAndWait();
+        }
+    }
+
+    @FXML
+    private void abrirCategorias() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/gestion/view/producto/Categorias.fxml"));
+            Parent root = loader.load();
+            Stage ventana = new Stage();
+            ventana.setTitle("Categorias");
+            ventana.setScene(new Scene(root));
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.showAndWait();
+            cargarProductos();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Error");
+            alerta.setHeaderText("No se pudo abrir Categorias");
+            alerta.setContentText(e.getMessage());
+            alerta.showAndWait();
+        }
     }
 }

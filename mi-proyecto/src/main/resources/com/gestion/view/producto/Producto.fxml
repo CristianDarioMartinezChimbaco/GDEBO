@@ -31,7 +31,7 @@
                </font>
             </Label>
             <Button fx:id="botonAgregar" contentDisplay="CENTER" mnemonicParsing="false" onAction="#abrirFormularioAgregar" text="Agregar producto" textAlignment="CENTER" GridPane.columnIndex="2" />
-            <Button fx:id="botonCategorias" mnemonicParsing="false" onAction="#irACategorias" text="Categorias de productos" textAlignment="CENTER" />
+            <Button fx:id="botonCategorias" mnemonicParsing="false" onAction="#abrirCategorias" text="Categorias de productos" textAlignment="CENTER" />
          </children>
       </GridPane>
       <VBox spacing="10.0" VBox.vgrow="ALWAYS">

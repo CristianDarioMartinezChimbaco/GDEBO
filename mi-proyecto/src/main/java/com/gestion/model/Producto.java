@@ -1,7 +1,8 @@
 package com.gestion.model;
 
-public class Producto {
+import java.util.Objects;
 
+public class Producto {
     // Atributos
     private Integer id; 
     private String codigoBarras;
@@ -12,6 +13,7 @@ public class Producto {
     //private String nombreCategoria;
     private Double cantidadProducto;
     private String unidadMedida;
+    //private Producto producto;
     private Integer unidadAgrupada;
     private String productoPadre;
     private Double precio;
@@ -164,6 +166,19 @@ public class Producto {
         + " - " + nombre
         + " - " + marca
       ;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Producto)) return false;
+        Producto otra = (Producto) o;
+        return Objects.equals(id, otra.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
     /*
     @Override

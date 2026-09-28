@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 
 public class ProductoFormularioControlador {
     private Producto producto = new Producto();
-    private Categoria categoria = new Categoria();
+    //private Categoria categoria = new Categoria();
 
     private ProductoRepositorio productoRepositorio = new ProductoRepositorio();
     private CategoriaRepositorio categoriaRepositorio = new CategoriaRepositorio();
@@ -34,10 +34,11 @@ public class ProductoFormularioControlador {
     private ObservableList<Producto> unidadesAgrupadas = productoRepositorio.consultarTodo();
     private ObservableList<Categoria> categorias = categoriaRepositorio.consultarTodo();
     private ObservableList<String> UNIDADES_ORIGINALES = UnidadesMedida.UNIDADES_ORIGINALES;
+    private ObservableList<String> unidadesProdRepo = productosACadena();
 
-    private FilteredList<String> unidadesFiltradasProdRepo = new FilteredList<>(productosACadena());
+    private FilteredList<String> unidadesFiltradasProdRepo = new FilteredList<>(unidadesProdRepo);
     //private FilteredList<String> categoriasFiltradasCatRepo = new FilteredList<>(categoriasACadena());
-    private FilteredList<String> unidadesFiltradas  = new FilteredList<>(UNIDADES_ORIGINALES);
+    //private FilteredList<String> unidadesFiltradas  = new FilteredList<>(UNIDADES_ORIGINALES);
     @FXML private TextField txtCodigoBarras;
     @FXML private TextField txtNombreProducto;
     @FXML private TextField txtMarca;
@@ -46,7 +47,6 @@ public class ProductoFormularioControlador {
     @FXML private RadioButton unidadMedida;
     @FXML private RadioButton unidadAgrupada;
     @FXML private ToggleGroup grupoTipoUnidad;
-    @FXML private ComboBox<String> txtUnidadMedida;
     @FXML private ChoiceBox<String> seleccionUnidadMedida;
     @FXML private ComboBox<String> txtUnidadAgrupada;
     @FXML private TextField txtPrecio;
@@ -62,6 +62,7 @@ public class ProductoFormularioControlador {
     // Metodos
     @FXML
     public void initialize() {
+
         seleccionCategoria.setItems(categorias);
         // Ayuda a no ecritura de ComboBox sin selccion del radioButton
         // Configuración inicial
@@ -72,16 +73,6 @@ public class ProductoFormularioControlador {
         });
         // ComboBox unidad de medida
         seleccionUnidadMedida.setItems(UnidadesMedida.UNIDADES_ORIGINALES);
-        txtUnidadMedida.setItems(unidadesFiltradas);
-        txtUnidadMedida.getEditor().textProperty().addListener((obs, old, nuevo) -> {
-            if (nuevo == null || nuevo.isEmpty()) {
-                unidadesFiltradas.setPredicate(s -> true);
-            } else {
-                unidadesFiltradas.setPredicate(s ->
-                    s.toLowerCase().contains(nuevo.toLowerCase())
-                );
-            }
-        });
         // ComboBox unidad agrupada
         txtUnidadAgrupada.setItems(unidadesFiltradasProdRepo);
         txtUnidadAgrupada.getEditor().textProperty().addListener((obs, old, nuevo) -> {
@@ -100,33 +91,52 @@ public class ProductoFormularioControlador {
         txtCodigoBarras.setText(producto.conseguirCodigoBarras());
         txtNombreProducto.setText(producto.conseguirNombre());
         txtMarca.setText(producto.conseguirMarca());
+        categorias.add(producto.conseguirCategoria());
         seleccionCategoria.setValue(producto.conseguirCategoria());
         txtCantidadProducto.setText(String.valueOf(producto.conseguirCantidadProducto()));
-        //System.out.println(producto.conseguirUnidadAgrupada() + " <-A & M-> " + producto.conseguirUnidadMedida());
-        txtUnidadMedida.setValue(producto.conseguirUnidadMedida());
-        if (producto.conseguirUnidadAgrupada() == null){
+            System.out.println(producto.conseguirUnidadAgrupada() + " <-id pAgrupada");
+            System.out.println(producto.conseguirProductoPadre() + " <-nombre pAgrupada");
+        seleccionUnidadMedida.setValue(producto.conseguirUnidadMedida());
+        if (producto.conseguirUnidadAgrupada() == null) {
             unidadMedida.setSelected(true);
             unidadAgrupada.setSelected(false);
             txtUnidadAgrupada.setValue("");
         } else {
             unidadMedida.setSelected(false);
             unidadAgrupada.setSelected(true);
-            txtUnidadAgrupada.setValue(String.valueOf(producto.conseguirUnidadAgrupada()));
+            Producto productoPadre = productoRepositorio.consultarProductoDesactivado(
+                producto.conseguirUnidadAgrupada()
+            );
+            String productoPadreCadena = productoACadena(productoPadre);
+                System.out.println(productoPadreCadena + " <- productoPadreCadena");
+                System.out.println(producto.conseguirProductoPadre() + " <- nombre pAgrupada");
+            if (!ProductoRepositorio.estaActivo(producto.conseguirUnidadAgrupada())) {
+                unidadesProdRepo.add(productoPadreCadena);
+            }
+            txtUnidadAgrupada.setValue(productoPadreCadena);
         }
         txtPrecio.setText(String.valueOf(producto.conseguirPrecio()));
         txtExistencias.setText(String.valueOf(producto.conseguirExistencias()));
         txtMinimoExistencias.setText(String.valueOf(producto.conseguirMinimoExistencias()));
+        verifiarHijoPadre();
+    }
+
+    private void verifiarHijoPadre(){
+        unidadesProdRepo.remove(productoACadena(producto));
+    }
+
+    private String productoACadena(Producto prod){
+        return prod.conseguirId() + " - "
+            + prod.conseguirCodigoBarras() + " - "
+            + prod.conseguirNombre() + " - "
+            + prod.conseguirMarca();
     }
 
     private ObservableList<String> productosACadena() {
         ObservableList<String> cadenas = FXCollections.observableArrayList();
         for(Producto prod: unidadesAgrupadas){
             if (prod.conseguirUnidadAgrupada() == null) {
-                cadenas.add(prod.conseguirId() + " - "
-                    + prod.conseguirCodigoBarras() + " - "
-                    + prod.conseguirNombre() + " - "
-                    + prod.conseguirMarca()
-                );
+                cadenas.add(productoACadena(prod));
             }
         }
         return cadenas;
@@ -134,10 +144,10 @@ public class ProductoFormularioControlador {
 
     private void configurarTipoUnidad() {
         if (unidadMedida.isSelected()) {
-            txtUnidadMedida.setDisable(false);
+            seleccionUnidadMedida.setDisable(false);
             txtUnidadAgrupada.setDisable(true);
         } else if (unidadAgrupada.isSelected()) {
-            txtUnidadMedida.setDisable(true);
+            seleccionUnidadMedida.setDisable(true);
             txtUnidadAgrupada.setDisable(false);
         }
     }
@@ -224,6 +234,15 @@ public class ProductoFormularioControlador {
             return;
         }
         producto.colocarMarca(txtMarca.getText().trim());
+///////////// Validacion Categoria //////////////////////////////////////////////////////////
+        if (seleccionCategoria.getSelectionModel().getSelectedItem() == null) {
+            new Alert(
+                AlertType.ERROR,
+                "Categoria vacia, por favor corrijala para continuar"
+            ).showAndWait();
+            return;
+        }
+        producto.colocarCategoria(seleccionCategoria.getSelectionModel().getSelectedItem());
 ///////////// Validacion Cantidad de producto //////////////////////////////////////////////////////////
         if (txtCantidadProducto.getText() == null || txtCantidadProducto.getText().isBlank()) {
              new Alert(
@@ -251,8 +270,8 @@ public class ProductoFormularioControlador {
             return;
         }
         if (unidadMedida.isSelected() 
-            && txtUnidadMedida.getValue() != null 
-            && txtUnidadMedida.getValue().equals(UnidadesMedida.UNIDAD)
+            && seleccionUnidadMedida.getValue() != null 
+            && seleccionUnidadMedida.getValue().equals(UnidadesMedida.UNIDAD)
         ) {
             double numero =  Double.parseDouble(txtCantidadProducto.getText().trim());
             if (!(numero % 1 == 0)) {
@@ -265,12 +284,11 @@ public class ProductoFormularioControlador {
         }
 ///////////// Validacion Unidad medida //////////////////////////////////////////////////////////
         if (unidadMedida.isSelected()) {
-            if (txtUnidadMedida.getSelectionModel().getSelectedItem() == null ||
+            if (seleccionUnidadMedida.getSelectionModel().getSelectedItem() == null ||
                 !UNIDADES_ORIGINALES.contains(
-                    txtUnidadMedida.getSelectionModel().getSelectedItem()
+                    seleccionUnidadMedida.getSelectionModel().getSelectedItem()
                 )
             ) {
-                txtUnidadMedida.getEditor().clear();
                 new Alert(
                     AlertType.ERROR,
                     "Debe seleccionar una unidad de medida válida."
@@ -278,12 +296,12 @@ public class ProductoFormularioControlador {
                 return;
             }
             producto.colocarUnidadMedida(
-                txtUnidadMedida.getSelectionModel().getSelectedItem()
+                seleccionUnidadMedida.getSelectionModel().getSelectedItem()
             );
             producto.colocarUnidadAgrupada(null);
         } else if (unidadAgrupada.isSelected()) {
             if (txtUnidadAgrupada.getSelectionModel().getSelectedItem() == null ||
-                !productosACadena().contains(
+                !unidadesProdRepo.contains(
                     txtUnidadAgrupada.getSelectionModel().getSelectedItem()
                 )
             ) {
@@ -337,6 +355,8 @@ public class ProductoFormularioControlador {
             return;
         }
 ///////////// Validacion Exixtencias //////////////////////////////////////////////////////////
+        producto.colocarExistencias(0.0);
+        /*  NO SE PUEDE MODIFICAR ESTE CAMPO DESDE ESTATABLA, SOLO DESDE LOTES
         if (txtExistencias.getText() == null || txtExistencias.getText().isBlank()) {
             new Alert(
                 AlertType.ERROR,
@@ -360,6 +380,7 @@ public class ProductoFormularioControlador {
             ).showAndWait();
             return;
         }
+        */
 ///////////// Validacion Minimo de existencias //////////////////////////////////////////////////////////
         if (txtMinimoExistencias.getText() == null || txtMinimoExistencias.getText().isBlank()) {
             new Alert(

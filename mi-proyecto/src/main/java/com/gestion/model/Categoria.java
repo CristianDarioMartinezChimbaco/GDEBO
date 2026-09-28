@@ -1,5 +1,7 @@
 package com.gestion.model;
 
+import java.util.Objects;
+
 public class Categoria {
 
     private Integer id;
@@ -7,6 +9,7 @@ public class Categoria {
     private Integer activo;
 
     public Categoria() {
+        //Vacio
     }
 
     public Categoria(Integer id, String nombre, Integer activo) {
@@ -44,5 +47,17 @@ public class Categoria {
     public String toString() {
       return id + " - " + nombre;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Categoria)) return false;
+        Categoria otra = (Categoria) o;
+        return Objects.equals(id, otra.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

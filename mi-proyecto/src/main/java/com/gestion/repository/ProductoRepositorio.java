@@ -13,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ProductoRepositorio {
-
     private static final String[] CAMPOS = {"id",
         "codigo_barras",
         "nombre_producto",
@@ -27,7 +26,6 @@ public class ProductoRepositorio {
         "minimo_existencias",
         "activo" 
     };
-
     // Create
     private static final String CREAR_TABLA = "CREATE TABLE IF NOT EXISTS producto ( "
         + "id INTEGER PRIMARY KEY, "
@@ -45,7 +43,6 @@ public class ProductoRepositorio {
         + "FOREIGN KEY (id_categoria) REFERENCES categoria(id), "
         + "FOREIGN KEY (unidad_agrupada) REFERENCES producto(id) );"
     ;
-
     private static final String CONSULTA_INSERTAR = "INSERT INTO producto "
         + "(codigo_barras, "
         + "nombre_producto, "
@@ -59,7 +56,6 @@ public class ProductoRepositorio {
         + "minimo_existencias) "
         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
     ;
-
     // Read
     private static final String CONSULTA_TODO = "SELECT "
         + "p.id, "
@@ -85,8 +81,7 @@ public class ProductoRepositorio {
         + "ON p.id_categoria = c.id "
         + "WHERE p.activo = 1;"
     ;
-    
-    private static final String CONSULTA_PRODUCTO = "SELECT "
+    private static final String CONSULTA_PRODUCTO_ACTIVADO = "SELECT "
         + "p.id, "
         + "p.codigo_barras, "
         + "p.nombre_producto, "
@@ -96,21 +91,42 @@ public class ProductoRepositorio {
         + "p.cantidad_producto, "
         + "p.unidad_medida, "
         + "p.unidad_agrupada, "
-        + "p.precio_venta, "
-        + "p.existencias, "
-        + "p.minimo_existencias, "
         + "agrupado.codigo_barras || ' - ' || "
         + "agrupado.nombre_producto || ' - ' || "
-        + "agrupado.marca "
-        + "AS producto_padre "
+        + "agrupado.marca AS producto_padre, "
+        + "p.precio_venta, "
+        + "p.existencias, "
+        + "p.minimo_existencias "
         + "FROM producto p "
-        + "LEFT JOIN producto agrupado "
-        + "ON p.unidad_agrupada = agrupado.id "
         + "LEFT JOIN categoria c "
         + "ON p.id_categoria = c.id "
+        + "LEFT JOIN producto agrupado "
+        + "ON p.unidad_agrupada = agrupado.id "
         + "WHERE p.activo = 1 AND p.id = ?;"
     ;
-
+    private static final String CONSULTA_PRODUCTO_DESACTIVADO = "SELECT "
+        + "p.id, "
+        + "p.codigo_barras, "
+        + "p.nombre_producto, "
+        + "p.marca, "
+        + "p.id_categoria, "
+        + "c.nombre_categoria AS categoria, "
+        + "p.cantidad_producto, "
+        + "p.unidad_medida, "
+        + "p.unidad_agrupada, "
+        + "agrupado.codigo_barras || ' - ' || "
+        + "agrupado.nombre_producto || ' - ' || "
+        + "agrupado.marca AS producto_padre, "
+        + "p.precio_venta, "
+        + "p.existencias, "
+        + "p.minimo_existencias "
+        + "FROM producto p "
+        + "LEFT JOIN categoria c "
+        + "ON p.id_categoria = c.id "
+        + "LEFT JOIN producto agrupado "
+        + "ON p.unidad_agrupada = agrupado.id "
+        + "WHERE p.activo = 0 AND p.id = ?;"
+    ;
     // Update
     private static final String CONSULTA_ACTUALIZAR = "UPDATE producto " 
         + "SET codigo_barras = ?, "
@@ -125,10 +141,9 @@ public class ProductoRepositorio {
         + "minimo_existencias = ? " 
         + "WHERE id = ?;"
     ; 
-
     // Delete    
     private static final String CONSULTA_BORRAR = "UPDATE producto SET activo = 0 WHERE id = ?;";
-
+    
     // Constructor
     public ProductoRepositorio(){
         generarTabla();
@@ -206,7 +221,45 @@ public class ProductoRepositorio {
         }
     }
 
-    // Read       
+    // Read    
+    static public boolean existe(int id) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM producto WHERE id = ?)";
+        try (
+            Connection conexion = ConexionBaseDatos.conectar();
+            PreparedStatement sentencia = conexion.prepareStatement(sql)
+        ) {
+            sentencia.setInt(1, id);
+            try (ResultSet conjuntoResultados = sentencia.executeQuery()) {
+                return conjuntoResultados.next() && conjuntoResultados.getInt(1) == 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al comprobar si existe el producto", e);
+        }
+    }
+
+    static public boolean estaActivo(int id) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM producto WHERE id = ? AND activo = 1)";
+        try (
+            Connection conexion = ConexionBaseDatos.conectar();
+            PreparedStatement sentencia = conexion.prepareStatement(sql)
+        ) {
+            sentencia.setInt(1, id);
+            try (ResultSet conjuntoResultados = sentencia.executeQuery()) {
+                return conjuntoResultados.next() && conjuntoResultados.getInt(1) == 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al verificar si el producto está activo", e);
+        }
+    }
+
+    public Producto consultarProductoDesactivado(int id) {
+        return consultarProducto(id, CONSULTA_PRODUCTO_DESACTIVADO);
+    }
+
+    public Producto consultarProductoActivado(int id) {
+        return consultarProducto(id, CONSULTA_PRODUCTO_ACTIVADO);
+    }
+
     public ObservableList<Producto> consultarTodo() {
         return consultar(CONSULTA_TODO);
     }
@@ -275,11 +328,11 @@ public class ProductoRepositorio {
         return columna;
     }
 
-    public Producto consultarProducto(int id){
+    private Producto consultarProducto(int id, String consulta ){
         Producto producto = new Producto();
         try (
             Connection conexion = ConexionBaseDatos.conectar();
-            PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_PRODUCTO)
+            PreparedStatement sentenciaPreparada = conexion.prepareStatement(consulta)
         ) {
             sentenciaPreparada.setInt(1, id);
             try (ResultSet conjuntoResultados = sentenciaPreparada.executeQuery()) {

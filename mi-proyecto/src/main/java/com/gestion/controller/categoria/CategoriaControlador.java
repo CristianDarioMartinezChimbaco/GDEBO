@@ -84,7 +84,8 @@ public class CategoriaControlador {
         alerta.getDialogPane().setContent(contenedor);
         ButtonType botonContinuar = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
         ButtonType botonCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
-        alerta.getButtonTypes().setAll(botonContinuar, botonCancelar);
+        ButtonType botonEliminar = new ButtonType("Eliminar", ButtonBar.ButtonData.OTHER);
+        alerta.getButtonTypes().setAll(botonContinuar, botonCancelar, botonEliminar);
         Optional<ButtonType> resultado = alerta.showAndWait();
         if (resultado.isPresent() && resultado.get() == botonContinuar){
             if (txtNombreCategoria.getText().trim().isEmpty()){
@@ -95,6 +96,11 @@ public class CategoriaControlador {
             CategoriaRepositorio catRepo = new CategoriaRepositorio();
             catRepo.editarCategoria(categoria);
         }
+        if (resultado.isPresent() && resultado.get() == botonEliminar){
+            CategoriaRepositorio catRepo = new CategoriaRepositorio();
+            catRepo.borrarCategoria(categoria.conseguirId());
+        }
+
         cargarCategorias();
     }
 

@@ -62,7 +62,7 @@ public class ProductoControlador {
     @FXML private TableColumn<Producto, String> columnaCodigo;
     @FXML private TableColumn<Producto, String> columnaNombre;
     @FXML private TableColumn<Producto, String> columnaMarca;
-    @FXML private TableColumn<Producto, Integer> columnaCategoria;
+    @FXML private TableColumn<Producto, String> columnaCategoria;
     @FXML private TableColumn<Producto, Double> columnaCantidad;
     @FXML private TableColumn<Producto, String> columnaUnidadMedida;
     @FXML private TableColumn<Producto, String> columnaProductoPadre;
@@ -86,6 +86,10 @@ public class ProductoControlador {
             filtroMarca,
             listaFiltroMarca
         );
+        configurarFiltro(
+            filtroNombreCategoria,
+            listaFiltroNombreCategoria
+        );
     }
 
     private void inicializarProductosTablaVista() {
@@ -95,8 +99,8 @@ public class ProductoControlador {
             celda -> new SimpleStringProperty(celda.getValue().conseguirNombre()));
         columnaMarca.setCellValueFactory(
             celda -> new SimpleStringProperty(celda.getValue().conseguirMarca()));
-        //Categoria
-    
+        columnaCategoria.setCellValueFactory(
+            celda -> new SimpleStringProperty(celda.getValue().conseguirCategoria().conseguirNombre()));
         columnaCantidad.setCellValueFactory(
             celda -> new SimpleObjectProperty<>(celda.getValue().conseguirCantidadProducto()));
         columnaUnidadMedida.setCellValueFactory(
@@ -143,8 +147,7 @@ public class ProductoControlador {
                 getClass().getResource("/com/gestion/view/producto/ProductoEditar.fxml")
             );
             Parent root = loader.load();
-            ProductoFormularioControlador controlador =
-                loader.getController();
+            ProductoFormularioControlador controlador = loader.getController();
             controlador.cargarProductoCampoTexto(producto);
             Stage ventana = new Stage();
             ventana.setTitle("Editar producto");
@@ -177,7 +180,7 @@ public class ProductoControlador {
             .trim()
             .toLowerCase()
         ;
-        String nombreCategoria = filtroMarca.getEditor()
+        String nombreCategoria = filtroNombreCategoria.getEditor()
             .getText()
             .trim()
             .toLowerCase()
@@ -203,7 +206,8 @@ public class ProductoControlador {
             ;
             boolean coincideCategoria =
                 nombreCategoria.isEmpty()
-                || producto.conseguirMarca()
+                || producto.conseguirCategoria()
+                    .conseguirNombre()
                     .toLowerCase()
                     .contains(nombreCategoria)
             ;

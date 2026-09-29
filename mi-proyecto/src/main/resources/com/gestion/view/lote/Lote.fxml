@@ -54,7 +54,7 @@
                   <TableColumn fx:id="columnaFechaVencimiento" prefWidth="57.0" text="Fecha de vencimiento" />
                   <TableColumn fx:id="columnaCantidadInventarioMovido" text="Cantidad de inventrio movido" />
                   <TableColumn fx:id="columnaValorTransaccion" text="Valor de la transaccion" />
-                  <TableColumn prefWidth="65.0" text="Motivo" />
+                  <TableColumn fx:id="columnaMotivo" prefWidth="65.0" text="Motivo" />
                </columns>
             </TableView>
          </children>

@@ -2,29 +2,28 @@ package com.gestion.model;
 
 public class Lote {
 
-    // Atributos
     private Integer id;
-    private Integer idProducto;
+    private Producto producto;
     private String lote;
     private String fechaRegistro;
+    private String fechaExpedicion;
     private String fechaVencimiento;
-    private Double cantidadEntrada;
-    private Double precioCompra;
-    private Boolean activo;
+    private Double cantidadMovimiento;
+    private Double valorMovimiento;
+    private String motivo;
 
     // Constructor
-
     public Lote() {
-        // Vacio
     }
 
     // Getters / Conseguir
+
     public Integer conseguirId() {
         return id;
     }
 
-    public Integer conseguirIdProducto() {
-        return idProducto;
+    public Producto conseguirProducto() {
+        return producto;
     }
 
     public String conseguirLote() {
@@ -35,29 +34,34 @@ public class Lote {
         return fechaRegistro;
     }
 
+    public String conseguirFechaExpedicion() {
+        return fechaExpedicion;
+    }
+
     public String conseguirFechaVencimiento() {
         return fechaVencimiento;
     }
 
-    public Double conseguirCantidadEntrada() {
-        return cantidadEntrada;
+    public Double conseguirCantidadMovimiento() {
+        return cantidadMovimiento;
     }
 
-    public Double conseguirPrecioCompra() {
-        return precioCompra;
+    public Double conseguirValorMovimiento() {
+        return valorMovimiento;
     }
 
-    public Boolean conseguirActivo() {
-        return activo;
+    public String conseguirMotivo() {
+        return motivo;
     }
 
     // Setters / Colocar
+
     public void colocarId(Integer id) {
         this.id = id;
     }
 
-    public void colocarIdProducto(Integer idProducto) {
-        this.idProducto = idProducto;
+    public void colocarProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public void colocarLote(String lote) {
@@ -68,19 +72,23 @@ public class Lote {
         this.fechaRegistro = fechaRegistro;
     }
 
+    public void colocarFechaExpedicion(String fechaExpedicion) {
+        this.fechaExpedicion = fechaExpedicion;
+    }
+
     public void colocarFechaVencimiento(String fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public void colocarCantidadEntrada(Double cantidadEntrada) {
-        this.cantidadEntrada = cantidadEntrada;
+    public void colocarCantidadMovimiento(Double cantidadMovimiento) {
+        this.cantidadMovimiento = cantidadMovimiento;
     }
 
-    public void colocarPrecioCompra(Double precioCompra) {
-        this.precioCompra = precioCompra;
+    public void colocarValorMovimiento(Double valorMovimiento) {
+        this.valorMovimiento = valorMovimiento;
     }
 
-    public void colocarActivo(Boolean activo) {
-        this.activo = activo;
+    public void colocarMotivo(String motivo) {
+        this.motivo = motivo;
     }
 }

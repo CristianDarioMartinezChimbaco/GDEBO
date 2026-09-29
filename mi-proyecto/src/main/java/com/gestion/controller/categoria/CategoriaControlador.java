@@ -97,10 +97,11 @@ public class CategoriaControlador {
             catRepo.editarCategoria(categoria);
         }
         if (resultado.isPresent() && resultado.get() == botonEliminar){
-            CategoriaRepositorio catRepo = new CategoriaRepositorio();
-            catRepo.borrarCategoria(categoria.conseguirId());
+            if (!categoriaRepositorio.borrarCategoriaFisicamente(categoria.conseguirId())){
+                CategoriaRepositorio catRepo = new CategoriaRepositorio();
+                catRepo.borrarCategoria(categoria.conseguirId());
+            }
         }
-
         cargarCategorias();
     }
 

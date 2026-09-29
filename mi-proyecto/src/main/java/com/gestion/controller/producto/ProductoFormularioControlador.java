@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import com.gestion.model.Categoria;
 import com.gestion.model.Producto;
+import com.gestion.model.UnidadesMedida;
 import com.gestion.repository.CategoriaRepositorio;
 import com.gestion.repository.ProductoRepositorio;
-import com.gestion.service.UnidadesMedida;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -64,7 +64,6 @@ public class ProductoFormularioControlador {
     public void initialize() {
 
         seleccionCategoria.setItems(categorias);
-        // Ayuda a no ecritura de ComboBox sin selccion del radioButton
         // Configuración inicial
         configurarTipoUnidad();
         // Detectar cuando cambia el RadioButton
@@ -94,9 +93,9 @@ public class ProductoFormularioControlador {
         categorias.add(producto.conseguirCategoria());
         seleccionCategoria.setValue(producto.conseguirCategoria());
         txtCantidadProducto.setText(String.valueOf(producto.conseguirCantidadProducto()));
-            System.out.println(producto.conseguirUnidadAgrupada() + " <-id pAgrupada");
-            System.out.println(producto.conseguirProductoPadre() + " <-nombre pAgrupada");
         seleccionUnidadMedida.setValue(producto.conseguirUnidadMedida());
+
+        //RGLA DE NEGOCIO:
         if (producto.conseguirUnidadAgrupada() == null) {
             unidadMedida.setSelected(true);
             unidadAgrupada.setSelected(false);
@@ -110,7 +109,7 @@ public class ProductoFormularioControlador {
             String productoPadreCadena = productoACadena(productoPadre);
                 System.out.println(productoPadreCadena + " <- productoPadreCadena");
                 System.out.println(producto.conseguirProductoPadre() + " <- nombre pAgrupada");
-            if (!ProductoRepositorio.estaActivo(producto.conseguirUnidadAgrupada())) {
+            if (!productoRepositorio.estaActivo(producto.conseguirUnidadAgrupada())) {
                 unidadesProdRepo.add(productoPadreCadena);
             }
             txtUnidadAgrupada.setValue(productoPadreCadena);
@@ -194,6 +193,7 @@ public class ProductoFormularioControlador {
             "Se eliminara el producto.", 
             "¿Esta seguro de esta accion?"
         )){
+            //////// ¡CUANDO LOTE ESTE LISTO DEVE INTENTARSE BORRADO FISICO DE LA BD!
             productoRepositorio.borrarProducto(producto.conseguirId());
             cerrarVentana();
         }
@@ -355,32 +355,7 @@ public class ProductoFormularioControlador {
             return;
         }
 ///////////// Validacion Exixtencias //////////////////////////////////////////////////////////
-        producto.colocarExistencias(0.0);
-        /*  NO SE PUEDE MODIFICAR ESTE CAMPO DESDE ESTATABLA, SOLO DESDE LOTES
-        if (txtExistencias.getText() == null || txtExistencias.getText().isBlank()) {
-            new Alert(
-                AlertType.ERROR,
-                "Existencias vacias, por favor corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-        try {
-            if (Double.parseDouble(txtExistencias.getText().trim()) < 0 ) {
-                new Alert(
-                    AlertType.ERROR,
-                    "Existencias es inferior a 0, por favor corrijalo para continuar"
-                ).showAndWait();
-                return;
-            }
-            producto.colocarExistencias(Double.parseDouble(txtExistencias.getText().trim()));
-        } catch (NumberFormatException e) {
-            new Alert(
-                AlertType.ERROR,
-                "Existencias no es un numerico, por favor indique \"0\" o corrijalo para continuar"
-            ).showAndWait();
-            return;
-        }
-        */
+        producto.colocarExistencias(0.0); // ¡NO SE PUEDE MODIFICAR ESTE CAMPO DESDE ESTA TABLA, SOLO DESDE LOTES!
 ///////////// Validacion Minimo de existencias //////////////////////////////////////////////////////////
         if (txtMinimoExistencias.getText() == null || txtMinimoExistencias.getText().isBlank()) {
             new Alert(

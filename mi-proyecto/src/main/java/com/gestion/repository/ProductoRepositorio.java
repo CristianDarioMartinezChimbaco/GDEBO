@@ -56,6 +56,7 @@ public class ProductoRepositorio {
         + "minimo_existencias) "
         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
     ;
+    private static final String CONSULTA_ACTIVAR = "UPDATE producto SET activo = 1 WHERE id = ?;";
     // Read
     private static final String CONSULTA_TODO = "SELECT "
         + "p.id, "
@@ -127,6 +128,29 @@ public class ProductoRepositorio {
         + "ON p.unidad_agrupada = agrupado.id "
         + "WHERE p.activo = 0 AND p.id = ?;"
     ;
+    private static final String CONSULTA_PRODUCTO_CODIGO_BARRAS = "SELECT "
+        + "p.id, "
+        + "p.codigo_barras, "
+        + "p.nombre_producto, "
+        + "p.marca, "
+        + "p.id_categoria, "
+        + "c.nombre_categoria AS categoria, "
+        + "p.cantidad_producto, "
+        + "p.unidad_medida, "
+        + "p.unidad_agrupada, "
+        + "agrupado.codigo_barras || ' - ' || "
+        + "agrupado.nombre_producto || ' - ' || "
+        + "agrupado.marca AS producto_padre, "
+        + "p.precio_venta, "
+        + "p.existencias, "
+        + "p.minimo_existencias "
+        + "FROM producto p "
+        + "LEFT JOIN categoria c "
+        + "ON p.id_categoria = c.id "
+        + "LEFT JOIN producto agrupado "
+        + "ON p.unidad_agrupada = agrupado.id "
+        + "WHERE p.codigo_barras = ?;"
+    ;
     // Update
     private static final String CONSULTA_ACTUALIZAR = "UPDATE producto " 
         + "SET codigo_barras = ?, "
@@ -142,7 +166,7 @@ public class ProductoRepositorio {
         + "WHERE id = ?;"
     ; 
     // Delete    
-    private static final String CONSULTA_BORRAR = "UPDATE producto SET activo = 0 WHERE id = ?;";
+    private static final String CONSULTA_DESACTIVAR = "UPDATE producto SET activo = 0 WHERE id = ?;";
     
     // Constructor
     public ProductoRepositorio(){
@@ -172,7 +196,9 @@ public class ProductoRepositorio {
         return producto;
     }
 
-    private void actualizarTablaProducto(PreparedStatement sentenciaPreparada, Producto producto) throws SQLException {
+    private void actualizarTablaProducto(PreparedStatement sentenciaPreparada, 
+        Producto producto
+    ) throws SQLException {
         sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
         sentenciaPreparada.setString(2, producto.conseguirNombre());
         sentenciaPreparada.setString(3, producto.conseguirMarca());
@@ -183,9 +209,8 @@ public class ProductoRepositorio {
         sentenciaPreparada.setDouble(8, producto.conseguirPrecio());
         sentenciaPreparada.setDouble(9, producto.conseguirExistencias());
         sentenciaPreparada.setDouble(10, producto.conseguirMinimoExistencias());
-        //return sentenciaPreparada;
     }
-    // Create
+    // Create P
     private void generarTabla(){
         try (
             Connection conexion = ConexionBaseDatos.conectar();
@@ -201,18 +226,6 @@ public class ProductoRepositorio {
             Connection conexion = ConexionBaseDatos.conectar();
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_INSERTAR)
         ) {      
-            /*
-            sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
-            sentenciaPreparada.setString(2, producto.conseguirNombre());
-            sentenciaPreparada.setString(3, producto.conseguirMarca());
-            sentenciaPreparada.setInt(4, producto.conseguirCategoria().conseguirId());
-            sentenciaPreparada.setObject(5, producto.conseguirCantidadProducto());
-            sentenciaPreparada.setString(6, producto.conseguirUnidadMedida());
-            sentenciaPreparada.setObject(7, producto.conseguirUnidadAgrupada());
-            sentenciaPreparada.setDouble(8, producto.conseguirPrecio());
-            sentenciaPreparada.setDouble(9, producto.conseguirExistencias());
-            sentenciaPreparada.setDouble(10, producto.conseguirMinimoExistencias());
-            */
             actualizarTablaProducto(sentenciaPreparada,producto);
             sentenciaPreparada.executeUpdate();
         } catch (SQLException e) {
@@ -221,8 +234,12 @@ public class ProductoRepositorio {
         }
     }
 
+    public void activarProducto(int id){
+        modificarActivoProducto(id, CONSULTA_ACTIVAR);
+    }
+
     // Read    
-    static public boolean existe(int id) {
+    public boolean existe(int id) {
         String sql = "SELECT EXISTS(SELECT 1 FROM producto WHERE id = ?)";
         try (
             Connection conexion = ConexionBaseDatos.conectar();
@@ -237,7 +254,7 @@ public class ProductoRepositorio {
         }
     }
 
-    static public boolean estaActivo(int id) {
+    public boolean estaActivo(int id) {
         String sql = "SELECT EXISTS(SELECT 1 FROM producto WHERE id = ? AND activo = 1)";
         try (
             Connection conexion = ConexionBaseDatos.conectar();
@@ -250,6 +267,11 @@ public class ProductoRepositorio {
         } catch (SQLException e) {
             throw new RuntimeException("Error al verificar si el producto está activo", e);
         }
+    }
+
+    //UNICOS
+    public Producto consultarCodigoBarrasUnico(int codigoBarras) {
+        return consultarProducto(codigoBarras, CONSULTA_PRODUCTO_CODIGO_BARRAS);
     }
 
     public Producto consultarProductoDesactivado(int id) {
@@ -280,8 +302,13 @@ public class ProductoRepositorio {
         return consultarColumna(CAMPOS[3]);
     }
 
-    public ObservableList<String> consultarColumnaCategoria(){
-        return consultarColumna(CAMPOS[4]);
+    public ObservableList<Integer> consultarColumnaCategoria() {
+        ObservableList<String> categoriasString = consultarColumna(CAMPOS[4]);
+        ObservableList<Integer> categorias = FXCollections.observableArrayList();
+        for (String categoria : categoriasString) {
+            categorias.add(Integer.parseInt(categoria));
+        }
+        return categorias;
     }
 
     public ObservableList<String> consultarColumnaCantidadProducto(){
@@ -362,25 +389,12 @@ public class ProductoRepositorio {
         return productos;
     }
 
-
     // Update
     public void editarProducto(Producto producto) {
         try (
             Connection conexion = ConexionBaseDatos.conectar();
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_ACTUALIZAR)
         ) {
-            /*
-            sentenciaPreparada.setString(1, producto.conseguirCodigoBarras());
-            sentenciaPreparada.setString(2, producto.conseguirNombre());
-            sentenciaPreparada.setString(3, producto.conseguirMarca());
-            sentenciaPreparada.setInt(4, producto.conseguirCategoria().conseguirId());
-            sentenciaPreparada.setDouble(5, producto.conseguirCantidadProducto());
-            sentenciaPreparada.setString(6, producto.conseguirUnidadMedida());
-            sentenciaPreparada.setObject(7, producto.conseguirUnidadAgrupada());
-            sentenciaPreparada.setDouble(8, producto.conseguirPrecio());
-            sentenciaPreparada.setDouble(9, producto.conseguirExistencias());
-            sentenciaPreparada.setDouble(10, producto.conseguirMinimoExistencias());
-            */
             actualizarTablaProducto(sentenciaPreparada,producto);
             sentenciaPreparada.setInt(11, producto.conseguirId());  
             sentenciaPreparada.executeUpdate();
@@ -391,9 +405,13 @@ public class ProductoRepositorio {
 
     // Delete
     public void borrarProducto(Integer id) {
+        modificarActivoProducto(id, CONSULTA_DESACTIVAR);
+    }
+
+    public void modificarActivoProducto(Integer id, String consulta) {
         try ( 
             Connection conexion = ConexionBaseDatos.conectar();
-            PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_BORRAR)
+            PreparedStatement sentenciaPreparada = conexion.prepareStatement(consulta)
         ) { 
             sentenciaPreparada.setInt(1, id); 
             sentenciaPreparada.executeUpdate();
@@ -401,5 +419,4 @@ public class ProductoRepositorio {
             throw new RuntimeException("Error al borrar producto ", e);
         }
     }
-
 }

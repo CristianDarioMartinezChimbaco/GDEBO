@@ -1,4 +1,4 @@
-package com.gestion.service;
+package com.gestion.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

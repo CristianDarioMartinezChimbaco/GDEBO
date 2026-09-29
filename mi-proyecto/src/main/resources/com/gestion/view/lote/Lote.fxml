@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.lote.LoteControlador">
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.lote.LoteControlador">
    <children>
       <GridPane alignment="TOP_CENTER">
          <columnConstraints>
@@ -26,7 +26,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label text="Lotes" textAlignment="CENTER" GridPane.columnIndex="1">
+            <Label text="Historial de Lotes" textAlignment="CENTER" GridPane.columnIndex="1">
                <font>
                   <Font size="30.0" />
                </font>
@@ -38,27 +38,29 @@
          <children>
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <children>
-                  <ComboBox editable="true" promptText="Nombre de producto" />
                   <ComboBox editable="true" promptText="Lote" />
+                  <ComboBox editable="true" promptText="Nombre de producto" />
                   <DatePicker promptText="Fecha de registro" />
+                  <DatePicker promptText="Fecha de expedicion" />
                   <DatePicker promptText="Fecha de vencimiento" />
                </children>
             </HBox>
             <TableView fx:id="tablaLotes">
                <columns>
-                  <TableColumn fx:id="columnaProducto" text="Producto" />
                   <TableColumn fx:id="columnaLote" text="Lote" />
-                  <TableColumn fx:id="columnaFechaRegistro" text="Fecha de registro" />
-                  <TableColumn fx:id="columnaFechaVencimiento" text="Fecha de vencimiento" />
-                  <TableColumn fx:id="columnaCantidadEntrada" text="Cantidad entrada" />
-                  <TableColumn fx:id="columnaPrecioCompra" text="Precio de compra" />
-                  <TableColumn fx:id="columnaEditar" text="Editar" />
+                  <TableColumn fx:id="columnaProducto" text="Producto" />
+                  <TableColumn fx:id="columnaFechaRegistro" prefWidth="61.0" text="Fecha de registro" />
+                  <TableColumn fx:id="columnaFechaExpedicion" prefWidth="117.0" text="Fecha de expedicion" />
+                  <TableColumn fx:id="columnaFechaVencimiento" prefWidth="57.0" text="Fecha de vencimiento" />
+                  <TableColumn fx:id="columnaCantidadInventarioMovido" text="Cantidad de inventrio movido" />
+                  <TableColumn fx:id="columnaValorTransaccion" text="Valor de la transaccion" />
+                  <TableColumn prefWidth="65.0" text="Motivo" />
                </columns>
             </TableView>
          </children>
       </VBox>
    </children>
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
 </VBox>

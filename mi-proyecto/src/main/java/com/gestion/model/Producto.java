@@ -9,8 +9,6 @@ public class Producto {
     private String nombre;
     private String marca;
     private Categoria categoria = new Categoria();
-    //private Integer idCategoria;
-    //private String nombreCategoria;
     private Double cantidadProducto;
     private String unidadMedida;
     //private Producto producto;

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.lote.LoteControlador">
+<VBox spacing="20.0" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.lote.LoteControlador">
    <children>
       <GridPane alignment="TOP_CENTER">
          <columnConstraints>
@@ -26,7 +26,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label text="Historial de Lotes" textAlignment="CENTER" GridPane.columnIndex="1">
+            <Label styleClass="etiqueta-titulo" text="Historial de Lotes" textAlignment="CENTER" GridPane.columnIndex="1">
                <font>
                   <Font size="30.0" />
                </font>
@@ -38,11 +38,11 @@
          <children>
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <children>
-                  <ComboBox editable="true" promptText="Lote" />
-                  <ComboBox editable="true" promptText="Nombre de producto" />
-                  <DatePicker promptText="Fecha de registro" />
-                  <DatePicker promptText="Fecha de expedicion" />
-                  <DatePicker promptText="Fecha de vencimiento" />
+                  <ComboBox fx:id="filtroLote" editable="true" promptText="Lote" />
+                  <ComboBox fx:id="filtroProducto" editable="true" promptText="Producto" />
+                  <DatePicker fx:id="filtroFechaRegistro" promptText="Fecha de registro" />
+                  <DatePicker fx:id="filtroFechaExpedicion" promptText="Fecha de expedicion" />
+                  <DatePicker fx:id="filtroFechaVencimiento" promptText="Fecha de vencimiento" />
                </children>
             </HBox>
             <TableView fx:id="tablaLotes">
@@ -52,7 +52,7 @@
                   <TableColumn fx:id="columnaFechaRegistro" prefWidth="61.0" text="Fecha de registro" />
                   <TableColumn fx:id="columnaFechaExpedicion" prefWidth="117.0" text="Fecha de expedicion" />
                   <TableColumn fx:id="columnaFechaVencimiento" prefWidth="57.0" text="Fecha de vencimiento" />
-                  <TableColumn fx:id="columnaCantidadInventarioMovido" text="Cantidad de inventrio movido" />
+                  <TableColumn fx:id="columnaVolumenInventario" text="Volumen de inventrio movido" />
                   <TableColumn fx:id="columnaValorTransaccion" text="Valor de la transaccion" />
                   <TableColumn fx:id="columnaMotivo" prefWidth="65.0" text="Motivo" />
                </columns>

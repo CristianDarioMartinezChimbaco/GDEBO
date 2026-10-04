@@ -1,0 +1,613 @@
+/* ============================================
+   TEMA ESTILO BOOTSTRAP PARA JAVAFX
+   ============================================ */
+
+/* ---------- RAIZ ---------- */
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f8f9fa;
+    -fx-text-fill: #212529;
+}
+
+/* ============================================
+   BOTONES (nativo .button)
+   ============================================ */
+.button {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: white;
+    -fx-font-weight: 500;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 3, 0, 0, 1);
+}
+
+.button:hover    { -fx-background-color: #0b5ed7; }
+.button:pressed  { -fx-background-color: #0a58ca; }
+.button:focused  { -fx-border-color: #86b7fe; -fx-border-width: 3; }
+
+/* Clases personalizadas (traducidas) */
+.boton-primario        { -fx-background-color: #0d6efd; -fx-text-fill: white; }
+.boton-primario:hover  { -fx-background-color: #0b5ed7; }
+
+.boton-secundario        { -fx-background-color: #6c757d; -fx-text-fill: white; }
+.boton-secundario:hover  { -fx-background-color: #5c636a; }
+
+.boton-exito        { -fx-background-color: #198754; -fx-text-fill: white; }
+.boton-exito:hover  { -fx-background-color: #157347; }
+
+.boton-peligro        { -fx-background-color: #dc3545; -fx-text-fill: white; }
+.boton-peligro:hover  { -fx-background-color: #bb2d3b; }
+
+.boton-advertencia        { -fx-background-color: #ffc107; -fx-text-fill: #000; }
+.boton-advertencia:hover  { -fx-background-color: #ffca2c; }
+
+.boton-info        { -fx-background-color: #0dcaf0; -fx-text-fill: #000; }
+.boton-info:hover  { -fx-background-color: #31d2f2; }
+
+.boton-claro        { -fx-background-color: #f8f9fa; -fx-text-fill: #000; -fx-border-color: #dee2e6; }
+.boton-claro:hover  { -fx-background-color: #e2e6ea; }
+
+.boton-oscuro        { -fx-background-color: #212529; -fx-text-fill: white; }
+.boton-oscuro:hover  { -fx-background-color: #1c1f23; }
+
+.boton-contorno-primario {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0d6efd;
+    -fx-border-color: #0d6efd;
+    -fx-border-width: 1.5;
+}
+.boton-contorno-primario:hover {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: white;
+}
+
+.boton-pequenio { -fx-font-size: 12px; -fx-padding: 4 10 4 10; }
+.boton-grande   { -fx-font-size: 16px; -fx-padding: 12 22 12 22; }
+
+/* ============================================
+   ETIQUETAS (nativo .label)
+   ============================================ */
+.label {
+    -fx-text-fill: #212529;
+    -fx-font-size: 14px;
+}
+
+.etiqueta-titulo      { -fx-font-size: 24px; -fx-font-weight: bold; }
+.etiqueta-subtitulo   { -fx-font-size: 18px; -fx-font-weight: 600; }
+.etiqueta-apagada     { -fx-text-fill: #6c757d; }
+.etiqueta-primaria    { -fx-text-fill: #0d6efd; }
+.etiqueta-exito       { -fx-text-fill: #198754; }
+.etiqueta-peligro     { -fx-text-fill: #dc3545; }
+.etiqueta-advertencia { -fx-text-fill: #ffc107; }
+.etiqueta-info        { -fx-text-fill: #0dcaf0; }
+
+/* ============================================
+   CAJAS DE TEXTO (nativos .text-field, .password-field, .text-area)
+   ============================================ */
+.text-field, .password-field, .text-area {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 6 12 6 12;
+    -fx-font-size: 14px;
+    -fx-text-fill: #212529;
+    -fx-prompt-text-fill: #6c757d;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-border-color: #86b7fe;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(13,110,253,0.25), 4, 0, 0, 0);
+}
+
+.text-field:disabled, .password-field:disabled {
+    -fx-background-color: #e9ecef;
+    -fx-opacity: 0.7;
+}
+
+.text-area .content {
+    -fx-background-color: #ffffff;
+}
+
+/* ============================================
+   COMBOBOX (nativo .combo-box)
+   ============================================ */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 2 4 2 4;
+    -fx-font-size: 14px;
+}
+
+.combo-box:focused {
+    -fx-border-color: #86b7fe;
+    -fx-border-width: 2;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 6 10 6 10;
+    -fx-text-fill: #212529;
+    -fx-background-color: transparent;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4);
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: white;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/* ============================================
+   CHOICEBOX (nativo .choice-box)
+   ============================================ */
+.choice-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 4 8 4 8;
+}
+
+.choice-box:focused {
+    -fx-border-color: #86b7fe;
+    -fx-border-width: 2;
+}
+
+.choice-box .label {
+    -fx-text-fill: #212529;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4);
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: #0d6efd;
+}
+
+.choice-box .menu-item:focused .label {
+    -fx-text-fill: white;
+}
+
+/* ============================================
+   TABLAS (nativo .table-view)
+   ============================================ */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 6 6 0 0;
+    -fx-border-color: transparent transparent #dee2e6 transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent #dee2e6 transparent transparent;
+    -fx-size: 40px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #495057;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 0 8 0 8;
+    -fx-alignment: center-left;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #f1f3f5 transparent;
+    -fx-cell-size: 38px;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #f1f3f5;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #cfe2ff;
+    -fx-text-fill: #0a58ca;
+}
+
+.table-view .table-cell {
+    -fx-padding: 6 10 6 10;
+    -fx-border-color: transparent;
+    -fx-text-fill: #212529;
+    -fx-alignment: center-left;
+}
+
+.table-view .table-row-cell:selected .table-cell {
+    -fx-text-fill: #0a58ca;
+}
+
+.table-view .filler {
+    -fx-background-color: #f8f9fa;
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: #6c757d;
+}
+
+/* ============================================
+   CHECKBOX Y RADIOBUTTON (nativos)
+   ============================================ */
+.check-box, .radio-button {
+    -fx-text-fill: #212529;
+    -fx-font-size: 14px;
+}
+
+.check-box .box, .radio-button .radio {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 3;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #ffffff;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #0d6efd;
+    -fx-border-color: #0d6efd;
+}
+
+.radio-button:selected .dot {
+    -fx-background-color: #0d6efd;
+}
+
+.radio-button .radio {
+    -fx-border-radius: 50%;
+    -fx-background-radius: 50%;
+}
+
+/* ============================================
+   SLIDER (nativo)
+   ============================================ */
+.slider .track {
+    -fx-background-color: #dee2e6;
+    -fx-background-radius: 3;
+    -fx-pref-height: 6;
+}
+
+.slider .thumb {
+    -fx-background-color: #0d6efd;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 18;
+    -fx-pref-height: 18;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #0b5ed7;
+}
+
+/* ============================================
+   PROGRESSBAR (nativo)
+   ============================================ */
+.progress-bar {
+    -fx-pref-height: 16;
+}
+
+.progress-bar .track {
+    -fx-background-color: #e9ecef;
+    -fx-background-radius: 8;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #0d6efd;
+    -fx-background-radius: 8;
+}
+
+/* ============================================
+   DIALOGO (nativo .dialog-pane)
+   ============================================ */
+.dialog-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: transparent transparent #dee2e6 transparent;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+}
+
+/* ============================================
+   TOOLTIP (nativo)
+   ============================================ */
+.tooltip {
+    -fx-background-color: #212529;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 6;
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 12px;
+}
+
+/* ============================================
+   TABS (nativo .tab-pane)
+   ============================================ */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #dee2e6 transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-padding: 8 16 8 16;
+}
+
+.tab-pane .tab:selected {
+    -fx-border-color: transparent transparent #0d6efd transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #6c757d;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #0d6efd;
+    -fx-font-weight: bold;
+}
+
+/* ============================================
+   LISTVIEW (nativo)
+   ============================================ */
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.list-view .list-cell {
+    -fx-padding: 8 12 8 12;
+    -fx-text-fill: #212529;
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell:filled:hover {
+    -fx-background-color: #f1f3f5;
+}
+
+.list-view .list-cell:filled:selected {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: white;
+}
+
+/* ============================================
+   SCROLLBAR (nativo)
+   ============================================ */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #adb5bd;
+    -fx-background-radius: 8;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #6c757d;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* ============================================
+   DATEPICKER (nativo .date-picker)
+   ============================================ */
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 0;
+    -fx-font-size: 14px;
+}
+
+.date-picker:hover {
+    -fx-border-color: #adb5bd;
+}
+
+.date-picker:focused {
+    -fx-border-color: #86b7fe;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(13,110,253,0.25), 4, 0, 0, 0);
+}
+
+/* Caja de texto interna del DatePicker */
+.date-picker > .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 6 10 6 12;
+    -fx-text-fill: #212529;
+    -fx-prompt-text-fill: #6c757d;
+}
+
+.date-picker > .text-field:focused {
+    -fx-border-color: transparent;
+    -fx-effect: none;
+}
+
+/* Boton del calendario (icono derecho) */
+.date-picker > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0 6 6 0;
+    -fx-padding: 0 10 0 10;
+    -fx-cursor: hand;
+}
+
+.date-picker > .arrow-button:hover {
+    -fx-background-color: #f1f3f5;
+}
+
+.date-picker > .arrow-button > .arrow {
+    -fx-background-color: #495057;
+}
+
+/* -------- Popup del calendario -------- */
+.date-picker-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);
+    -fx-padding: 4;
+}
+
+/* Panel superior con mes y anio */
+.date-picker-popup > .month-year-pane {
+    -fx-background-color: #0d6efd;
+    -fx-background-radius: 6 6 0 0;
+    -fx-padding: 8 12 8 12;
+}
+
+.date-picker-popup > .month-year-pane .label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.date-picker-popup > .month-year-pane .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 2 8 2 8;
+    -fx-background-radius: 4;
+    -fx-border-color: transparent;
+    -fx-effect: none;
+    -fx-cursor: hand;
+}
+
+.date-picker-popup > .month-year-pane .button:hover {
+    -fx-background-color: rgba(255,255,255,0.2);
+}
+
+.date-picker-popup > .month-year-pane .spinner .button {
+    -fx-background-color: transparent;
+}
+
+.date-picker-popup > .month-year-pane .spinner .button > .left-arrow,
+.date-picker-popup > .month-year-pane .spinner .button > .right-arrow {
+    -fx-background-color: #ffffff;
+}
+
+/* Encabezado de dias (Lun, Mar, Mie...) */
+.date-picker-popup > .calendar-grid > .day-name-cell,
+.date-picker-popup > .calendar-grid > .week-number-cell {
+    -fx-text-fill: #6c757d;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 0 6 0;
+}
+
+/* Celdas de dias */
+.date-picker-popup > .calendar-grid {
+    -fx-background-color: #ffffff;
+    -fx-padding: 4;
+}
+
+.date-picker-popup > .calendar-grid > .date-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #212529;
+    -fx-background-radius: 6;
+    -fx-padding: 4 0 4 0;
+    -fx-cursor: hand;
+}
+
+.date-picker-popup > .calendar-grid > .date-cell:hover {
+    -fx-background-color: #e7f1ff;
+    -fx-text-fill: #0d6efd;
+}
+
+.date-picker-popup > .calendar-grid > .date-cell:focused {
+    -fx-background-color: #e7f1ff;
+    -fx-text-fill: #0d6efd;
+}
+
+/* Dia seleccionado */
+.date-picker-popup > .calendar-grid > .date-cell:selected {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.date-picker-popup > .calendar-grid > .date-cell:selected:hover {
+    -fx-background-color: #0b5ed7;
+}
+
+/* Dias de otro mes (sombreados) */
+.date-picker-popup > .calendar-grid > .date-cell:other-month,
+.date-picker-popup > .calendar-grid > .date-cell:previous-month,
+.date-picker-popup > .calendar-grid > .date-cell:next-month {
+    -fx-text-fill: #adb5bd;
+}
+
+/* Dia actual (hoy) */
+.date-picker-popup > .calendar-grid > .date-cell:today {
+    -fx-border-color: #0d6efd;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 6;
+}
+
+/* Celdas deshabilitadas */
+.date-picker-popup > .calendar-grid > .date-cell:disabled {
+    -fx-text-fill: #ced4da;
+}
+
+/* Semana / numero de semana */
+.date-picker-popup > .calendar-grid > .week-number-cell {
+    -fx-text-fill: #adb5bd;
+    -fx-background-color: #f8f9fa;
+}
+
+.date-picker-popup > .calendar-grid > .week-number-cell:hover {
+    -fx-background-color: #e9ecef;
+}

@@ -112,7 +112,6 @@ public class LoteRepositorio {
     }
 
     // Metodos
-
     private Lote convertirLote(ResultSet conjuntoResultados) throws SQLException {
         Lote lote = new Lote();
         lote.colocarId(conjuntoResultados.getInt("id"));
@@ -175,7 +174,6 @@ public class LoteRepositorio {
 
     public boolean existe(int id) {
         String sql = "SELECT EXISTS(SELECT 1 FROM lote WHERE id = ?)";
-
         try (
             Connection conexion = ConexionBaseDatos.conectar();
             PreparedStatement sentencia = conexion.prepareStatement(sql)
@@ -193,13 +191,11 @@ public class LoteRepositorio {
 
     public Lote consultarLote(int id) {
         Lote lote = new Lote();
-
         try (
             Connection conexion = ConexionBaseDatos.conectar();
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(CONSULTA_LOTE)
         ) {
             sentenciaPreparada.setInt(1, id);
-
             try (ResultSet conjuntoResultados = sentenciaPreparada.executeQuery()) {
                 if (conjuntoResultados.next()) {
                     lote = convertirLote(conjuntoResultados);
@@ -208,7 +204,6 @@ public class LoteRepositorio {
         } catch (SQLException e) {
             throw new RuntimeException("Error al consultar lote ", e);
         }
-
         return lote;
     }
 
@@ -254,11 +249,9 @@ public class LoteRepositorio {
 
     private ObservableList<String> consultarColumna(String nombreColumna) {
         ObservableList<String> columna = FXCollections.observableArrayList();
-
         String consultaFinal = "SELECT "
             + nombreColumna
             + " FROM lote;";
-
         try (
             Connection conexion = ConexionBaseDatos.conectar();
             Statement sentencia = conexion.createStatement();
@@ -270,13 +263,11 @@ public class LoteRepositorio {
         } catch (SQLException e) {
             throw new RuntimeException("Error al consultar la columna " + nombreColumna, e);
         }
-
         return columna;
     }
 
     private ObservableList<Lote> consultar(String consultaFinal) {
         ObservableList<Lote> lotes = FXCollections.observableArrayList();
-
         try (
             Connection conexion = ConexionBaseDatos.conectar();
             Statement sentencia = conexion.createStatement();
@@ -288,7 +279,6 @@ public class LoteRepositorio {
         } catch (SQLException e) {
             throw new RuntimeException("Error al consultar lotes ", e);
         }
-
         return lotes;
     }
 

@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.producto.ProductoFormularioControlador">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.lote.LoteFormularioControlador">
    <children>
-      <Label alignment="TOP_CENTER" text="Agregar movimiento de inventario">
+      <Label alignment="TOP_CENTER" styleClass="etiqueta-titulo" text="Agregar movimiento de inventario">
          <font>
             <Font size="18.0" />
          </font>
@@ -62,7 +62,7 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
                   <Label text="Fecha de registro" textAlignment="CENTER" />
-                  <DatePicker fx:id="txtFechaRegistro" disable="true" minWidth="200.0" promptText="%key.unspecified" />
+                  <DatePicker fx:id="txtFechaRegistro" disable="true" minWidth="200.0" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
@@ -99,8 +99,8 @@
       </HBox>
       <HBox alignment="CENTER" maxHeight="45.0" spacing="20.0">
          <children>
-            <Button fx:id="botonAceptar" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" />
-            <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+            <Button fx:id="botonAceptar" mnemonicParsing="false" onAction="#aceptar" styleClass="boton-exito" text="Aceptar" />
+            <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#cancelar" styleClass="boton-peligro" text="Cancelar" />
          </children>
       </HBox>
    </children>

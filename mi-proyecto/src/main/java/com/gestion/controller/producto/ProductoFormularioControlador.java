@@ -62,7 +62,6 @@ public class ProductoFormularioControlador {
     // Metodos
     @FXML
     public void initialize() {
-
         seleccionCategoria.setItems(categorias);
         // Configuración inicial
         configurarTipoUnidad();
@@ -94,8 +93,6 @@ public class ProductoFormularioControlador {
         seleccionCategoria.setValue(producto.conseguirCategoria());
         txtCantidadProducto.setText(String.valueOf(producto.conseguirCantidadProducto()));
         seleccionUnidadMedida.setValue(producto.conseguirUnidadMedida());
-
-        //RGLA DE NEGOCIO:
         if (producto.conseguirUnidadAgrupada() == null) {
             unidadMedida.setSelected(true);
             unidadAgrupada.setSelected(false);
@@ -107,8 +104,6 @@ public class ProductoFormularioControlador {
                 producto.conseguirUnidadAgrupada()
             );
             String productoPadreCadena = productoACadena(productoPadre);
-                System.out.println(productoPadreCadena + " <- productoPadreCadena");
-                System.out.println(producto.conseguirProductoPadre() + " <- nombre pAgrupada");
             if (!productoRepositorio.estaActivo(producto.conseguirUnidadAgrupada())) {
                 unidadesProdRepo.add(productoPadreCadena);
             }

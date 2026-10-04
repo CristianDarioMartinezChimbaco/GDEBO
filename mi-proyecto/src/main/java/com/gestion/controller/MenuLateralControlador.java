@@ -42,7 +42,7 @@ public class MenuLateralControlador {
     @FXML
     private void abrirLotes() {
         try {
-            cargarVista("/producto/Producto.fxml");
+            cargarVista("/lote/Lote.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

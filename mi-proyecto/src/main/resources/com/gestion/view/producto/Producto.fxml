@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.producto.ProductoControlador">
+<VBox spacing="20.0" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestion.controller.producto.ProductoControlador">
    <children>
       <GridPane alignment="TOP_CENTER">
          <columnConstraints>
@@ -25,7 +25,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label text="Productos" textAlignment="CENTER" GridPane.columnIndex="1">
+            <Label styleClass="etiqueta-titulo" text="Productos" textAlignment="CENTER" GridPane.columnIndex="1">
                <font>
                   <Font size="30.0" />
                </font>
